@@ -8,12 +8,13 @@ import com.example.zzjp.clothesShop.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("api/v1/categories")
 public class CategoryController {
 
@@ -27,21 +28,14 @@ public class CategoryController {
         this.itemService = itemService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = "application/json")
     ResponseEntity<Category> getById(@PathVariable("id") Long id) {
         try {
             Category category = categoryService.getById(id);
 
-            return new ResponseEntity<>(category, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/{name}")
-    ResponseEntity<Category> getByName(@PathVariable("name") String name) {
-        try {
-            Category category = categoryService.getByName(name);
+            if (category == null) {
+                return new ResponseEntity<>(category, HttpStatus.NOT_FOUND);
+            }
 
             return new ResponseEntity<>(category, HttpStatus.OK);
         } catch (Exception e) {
@@ -49,7 +43,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping
+    @GetMapping(produces = "application/json")
     ResponseEntity<List<Category>> getAll() {
         try {
             List<Category> categories = categoryService.getAll();
@@ -60,10 +54,14 @@ public class CategoryController {
         }
     }
 
-    @PostMapping
+    @PostMapping(produces = "application/json")
     ResponseEntity<Category> add(@RequestBody @Valid CategoryDto categoryDto) {
         try {
             Category category = categoryService.add(categoryDto);
+
+            if (category == null) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
 
             return new ResponseEntity<>(category, HttpStatus.OK);
         } catch (Exception e) {
@@ -71,7 +69,7 @@ public class CategoryController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", produces = "application/json")
     ResponseEntity<Category> update(@PathVariable("id") Long id, @RequestBody @Valid CategoryDto categoryDto) {
         try {
             Category category = categoryService.update(id, categoryDto.getName());
@@ -82,7 +80,7 @@ public class CategoryController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}", produces = "application/json")
     ResponseEntity remove(@PathVariable("id") Long id) {
         try {
             categoryService.remove(id);
@@ -93,7 +91,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/{id}/items")
+    @GetMapping(value = "/{id}/items", produces = "application/json")
     ResponseEntity<List<Item>> getItemsByCategory(@PathVariable("id") Long id) {
         try {
             List<Item> items = itemService.getByCategoryId(id);

@@ -1,9 +1,8 @@
 package com.example.zzjp.clothesShop.integration;
 
 import com.example.zzjp.clothesShop.ClothesShopApplication;
-import com.example.zzjp.clothesShop.initializer.Constants;
+import com.example.zzjp.clothesShop.initializer.PropertiesValues;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
-import com.example.zzjp.clothesShop.model.Category;
 import com.example.zzjp.clothesShop.model.Item;
 import com.example.zzjp.clothesShop.model.ItemDto;
 import com.example.zzjp.clothesShop.model.Size;
@@ -14,19 +13,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ClothesShopApplication.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
 @Rollback
 public class ItemServiceIntegrationTest {
@@ -48,18 +48,18 @@ public class ItemServiceIntegrationTest {
 
     @Test
     public void shouldReturnAllItemsByCategory() {
-        List<Item> result = itemService.getByCategoryId(Constants.CATEGORY_ID_1);
+        List<Item> result = itemService.getByCategoryId(PropertiesValues.CATEGORY_ID_1);
 
         assertThat(result.size())
                 .isEqualTo(2);
         assertThat(result.get(0).getId())
-                .isEqualTo(Constants.ITEM_ID_1);
+                .isEqualTo(PropertiesValues.ITEM_ID_1);
         assertThat(result.get(1).getId())
-                .isEqualTo(Constants.ITEM_ID_2);
+                .isEqualTo(PropertiesValues.ITEM_ID_2);
         assertThat(result.get(0).getName())
-                .isEqualTo(Constants.ITEM_NAME_1);
+                .isEqualTo(PropertiesValues.ITEM_NAME_1);
         assertThat(result.get(0).getPrice())
-                .isEqualTo(Constants.PRICE_1);
+                .isEqualTo(PropertiesValues.PRICE_1);
     }
 
     @Test
@@ -69,19 +69,19 @@ public class ItemServiceIntegrationTest {
         assertThat(result.size())
                 .isEqualTo(1);
         assertThat(result.get(0).getPrice())
-                .isEqualTo(Constants.PRICE_1);
+                .isEqualTo(PropertiesValues.PRICE_1);
     }
 
     @Test
     public void shouldReturnAllItemsByPrice() {
-        List<Item> result = itemService.getByPrice(Constants.PRICE_2);
+        List<Item> result = itemService.getByPrice(PropertiesValues.PRICE_2);
 
         assertThat(result.size())
                 .isEqualTo(2);
         assertThat(result.get(0).getPrice())
-                .isEqualTo(Constants.PRICE_2);
+                .isEqualTo(PropertiesValues.PRICE_2);
         assertThat(result.get(1).getPrice())
-                .isEqualTo(Constants.PRICE_2);
+                .isEqualTo(PropertiesValues.PRICE_2);
     }
 
     @Test
@@ -91,67 +91,67 @@ public class ItemServiceIntegrationTest {
         assertThat(result.size())
                 .isEqualTo(2);
         assertThat(result.get(0).getPrice())
-                .isEqualTo(Constants.PRICE_2);
+                .isEqualTo(PropertiesValues.PRICE_2);
         assertThat(result.get(1).getPrice())
-                .isEqualTo(Constants.PRICE_2);
+                .isEqualTo(PropertiesValues.PRICE_2);
     }
 
     @Test
     public void shouldReturnAllItemsByPriceLessThan() {
-        List<Item> result = itemService.getByPriceLessThan(Constants.PRICE_1);
+        List<Item> result = itemService.getByPriceLessThan(PropertiesValues.PRICE_1);
 
         assertThat(result.size())
                 .isEqualTo(2);
         assertThat(result.get(0).getPrice())
-                .isEqualTo(Constants.PRICE_2);
+                .isEqualTo(PropertiesValues.PRICE_2);
         assertThat(result.get(1).getPrice())
-                .isEqualTo(Constants.PRICE_2);
+                .isEqualTo(PropertiesValues.PRICE_2);
     }
 
     @Test
     public void shouldReturnAllItemsByColor() {
-        List<Item> result = itemService.getByColor(Constants.COLOR_1);
+        List<Item> result = itemService.getByColor(PropertiesValues.COLOR_1);
 
         assertThat(result.size())
                 .isEqualTo(2);
         assertThat(result.get(0).getColor())
-                .isEqualTo(Constants.COLOR_1);
+                .isEqualTo(PropertiesValues.COLOR_1);
         assertThat(result.get(1).getColor())
-                .isEqualTo(Constants.COLOR_1);
+                .isEqualTo(PropertiesValues.COLOR_1);
     }
 
     @Test
     public void shouldReturnAllItemsByAmount() {
-        List<Item> result = itemService.getByAmount(Constants.AMOUNT_2);
+        List<Item> result = itemService.getByAmount(PropertiesValues.AMOUNT_2);
 
         assertThat(result.size())
                 .isEqualTo(2);
         assertThat(result.get(0).getAmount())
-                .isEqualTo(Constants.AMOUNT_2);
+                .isEqualTo(PropertiesValues.AMOUNT_2);
         assertThat(result.get(1).getAmount())
-                .isEqualTo(Constants.AMOUNT_2);
+                .isEqualTo(PropertiesValues.AMOUNT_2);
     }
 
     @Test
     public void shouldReturnAllItemsByAmountGreaterThan() {
-        List<Item> result = itemService.getByAmountGreaterThan(Constants.AMOUNT_1);
+        List<Item> result = itemService.getByAmountGreaterThan(PropertiesValues.AMOUNT_1);
 
         assertThat(result.size())
                 .isEqualTo(2);
         assertThat(result.get(0).getAmount())
-                .isEqualTo(Constants.AMOUNT_2);
+                .isEqualTo(PropertiesValues.AMOUNT_2);
         assertThat(result.get(1).getAmount())
-                .isEqualTo(Constants.AMOUNT_2);
+                .isEqualTo(PropertiesValues.AMOUNT_2);
     }
 
     @Test
     public void shouldReturnAllItemsByAmountLessThan() {
-        List<Item> result = itemService.getByAmountLessThan(Constants.AMOUNT_2);
+        List<Item> result = itemService.getByAmountLessThan(PropertiesValues.AMOUNT_2);
 
         assertThat(result.size())
                 .isEqualTo(1);
         assertThat(result.get(0).getAmount())
-                .isEqualTo(Constants.AMOUNT_1);
+                .isEqualTo(PropertiesValues.AMOUNT_1);
     }
 
     @Test
@@ -164,18 +164,18 @@ public class ItemServiceIntegrationTest {
 
     @Test
     public void shouldReturnItemById() {
-        Item result = itemService.getById(Constants.ITEM_ID_1);
+        Item result = itemService.getById(PropertiesValues.ITEM_ID_1);
 
         assertThat(result.getId())
-                .isEqualTo(Constants.ITEM_ID_1);
+                .isEqualTo(PropertiesValues.ITEM_ID_1);
     }
 
     @Test
     public void shouldReturnItemByName() {
-        Item result = itemService.getByName(Constants.ITEM_NAME_1);
+        Item result = itemService.getByName(PropertiesValues.ITEM_NAME_1);
 
         assertThat(result.getName())
-                .isEqualTo(Constants.ITEM_NAME_1);
+                .isEqualTo(PropertiesValues.ITEM_NAME_1);
     }
 
     @Test
@@ -184,7 +184,7 @@ public class ItemServiceIntegrationTest {
         String name = "SHORTS003L";
         itemDto.setName(name);
         itemDto.setAmount(2);
-        itemDto.setCategoryId(Constants.CATEGORY_ID_1);
+        itemDto.setCategoryId(PropertiesValues.CATEGORY_ID_1);
         itemDto.setColor("white");
         itemDto.setSize(Size.L);
         itemDto.setPrice(new BigDecimal("49.99"));
@@ -211,50 +211,50 @@ public class ItemServiceIntegrationTest {
         ItemDto itemDto = new ItemDto();
         itemDto.setName(name);
         itemDto.setAmount(amount);
-        itemDto.setCategoryId(Constants.CATEGORY_ID_2);
+        itemDto.setCategoryId(PropertiesValues.CATEGORY_ID_2);
         itemDto.setColor(color);
         itemDto.setSize(size);
         itemDto.setPrice(price);
 
-        Item result = itemService.update(Constants.ITEM_ID_1, itemDto);
+        Item result = itemService.update(PropertiesValues.ITEM_ID_1, itemDto);
 
         assertThat(result.getName())
                 .isEqualTo(name);
         assertThat(result.getName())
-                .isNotEqualTo(Constants.ITEM_NAME_1);
+                .isNotEqualTo(PropertiesValues.ITEM_NAME_1);
 
         assertThat(result.getAmount())
-                .isNotEqualTo(Constants.AMOUNT_1);
+                .isNotEqualTo(PropertiesValues.AMOUNT_1);
         assertThat(result.getAmount())
                 .isEqualTo(amount);
 
         assertThat(result.getColor())
-                .isNotEqualTo(Constants.COLOR_1);
+                .isNotEqualTo(PropertiesValues.COLOR_1);
         assertThat(result.getColor())
                 .isEqualTo(color);
 
         assertThat(result.getSize())
-                .isNotEqualTo(Constants.SIZE_1);
+                .isNotEqualTo(PropertiesValues.SIZE_1);
         assertThat(result.getSize())
                 .isEqualTo(size);
 
         assertThat(result.getPrice())
-                .isNotEqualTo(Constants.PRICE_1);
+                .isNotEqualTo(PropertiesValues.PRICE_1);
         assertThat(result.getPrice())
                 .isEqualTo(price);
 
         assertThat(result.getCategory().getId())
-                .isNotEqualTo(Constants.CATEGORY_ID_1);
+                .isNotEqualTo(PropertiesValues.CATEGORY_ID_1);
         assertThat(result.getCategory().getId())
-                .isEqualTo(Constants.CATEGORY_ID_2);
+                .isEqualTo(PropertiesValues.CATEGORY_ID_2);
     }
 
     @Test
     public void shouldRemoveItem() {
-        itemService.remove(Constants.ITEM_ID_1);
+        itemService.remove(PropertiesValues.ITEM_ID_1);
 
         List<Item> items = itemRepository.findAll();
-        Item item = itemRepository.findOne(Constants.ITEM_ID_1);
+        Item item = itemRepository.findOne(PropertiesValues.ITEM_ID_1);
 
         assertThat(items.size())
                 .isEqualTo(2);
@@ -264,13 +264,13 @@ public class ItemServiceIntegrationTest {
 
     @Test
     public void shouldReturnAllItemsBySize() {
-        List<Item> result = itemService.getBySize(Constants.SIZE_1);
+        List<Item> result = itemService.getBySize(PropertiesValues.SIZE_1);
 
         assertThat(result.size())
                 .isEqualTo(2);
         assertThat(result.get(0).getSize())
-                .isEqualTo(Constants.SIZE_1);
+                .isEqualTo(PropertiesValues.SIZE_1);
         assertThat(result.get(1).getSize())
-                .isEqualTo(Constants.SIZE_1);
+                .isEqualTo(PropertiesValues.SIZE_1);
     }
 }

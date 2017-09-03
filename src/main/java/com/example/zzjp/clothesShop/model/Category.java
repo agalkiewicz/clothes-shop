@@ -17,14 +17,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
     @NotBlank
-    @NotEmpty
     @Column(unique = true)
     private String name;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category", fetch = FetchType.LAZY)
-    private List<Item> items;
 
     public Category() {
     }
@@ -53,14 +48,6 @@ public class Category {
         this.name = name;
     }
 
-    public List<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
-
     public int hashCode() {
         return HashCodeBuilder.reflectionHashCode(this);
     }
@@ -74,7 +61,6 @@ public class Category {
         return "Category{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", items=" + items +
                 '}';
     }
 }

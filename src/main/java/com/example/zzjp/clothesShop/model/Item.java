@@ -17,13 +17,10 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
     @NotBlank
-    @NotEmpty
     @Column(unique = true)
     private String name;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;

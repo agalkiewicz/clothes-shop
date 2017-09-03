@@ -1,6 +1,6 @@
 package com.example.zzjp.clothesShop.integration;
 
-import com.example.zzjp.clothesShop.initializer.Constants;
+import com.example.zzjp.clothesShop.initializer.PropertiesValues;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
 import com.example.zzjp.clothesShop.model.Category;
 import com.example.zzjp.clothesShop.repository.CategoryRepository;
@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -18,6 +19,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Rollback
 public class CategoryRepositoryIntegrationTest {
 
@@ -35,9 +37,9 @@ public class CategoryRepositoryIntegrationTest {
 
     @Test
     public void shouldReturnCategoryByName() {
-        Category result = categoryRepository.findByName(Constants.CATEGORY_NAME_1);
+        Category result = categoryRepository.findByName(PropertiesValues.CATEGORY_NAME_1);
 
         assertThat(result.getName())
-                .isEqualTo(Constants.CATEGORY_NAME_1);
+                .isEqualTo(PropertiesValues.CATEGORY_NAME_1);
     }
 }

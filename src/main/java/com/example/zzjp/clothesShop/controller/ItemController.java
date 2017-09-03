@@ -5,13 +5,14 @@ import com.example.zzjp.clothesShop.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("api/v1/items")
 public class ItemController {
 
@@ -22,21 +23,14 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = "application/json")
     ResponseEntity<Item> getById(@PathVariable("id") Long id) {
         try {
             Item item = itemService.getById(id);
 
-            return new ResponseEntity<>(item, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/{name}")
-    ResponseEntity<Item> getByName(@PathVariable("name") String name) {
-        try {
-            Item item = itemService.getByName(name);
+            if(item == null) {
+                return new ResponseEntity<>(item, HttpStatus.NOT_FOUND);
+            }
 
             return new ResponseEntity<>(item, HttpStatus.OK);
         } catch (Exception e) {
@@ -44,51 +38,7 @@ public class ItemController {
         }
     }
 
-    @GetMapping("/{price}")
-    ResponseEntity<List<Item>> getByPrice(@PathVariable("price") BigDecimal price) {
-        try {
-            List<Item> items = itemService.getByPrice(price);
-
-            return new ResponseEntity<>(items, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/{color}")
-    ResponseEntity<List<Item>> getByColor(@PathVariable("color") String color) {
-        try {
-            List<Item> items = itemService.getByColor(color);
-
-            return new ResponseEntity<>(items, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/{size}")
-    ResponseEntity<List<Item>> getBySize(@PathVariable("size") Size size) {
-        try {
-            List<Item> items = itemService.getBySize(size);
-
-            return new ResponseEntity<>(items, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/{amount}")
-    ResponseEntity<List<Item>> getByPrice(@PathVariable("amount") Integer amount) {
-        try {
-            List<Item> items = itemService.getByAmount(amount);
-
-            return new ResponseEntity<>(items, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping
+    @GetMapping(produces = "application/json")
     ResponseEntity<List<Item>> getAll() {
         try {
             List<Item> items = itemService.getAll();
@@ -99,7 +49,7 @@ public class ItemController {
         }
     }
 
-    @PostMapping
+    @PostMapping(produces = "application/json")
     ResponseEntity<Item> add(@RequestBody @Valid ItemDto itemDto) {
         try {
             Item item = itemService.add(itemDto);
@@ -110,7 +60,7 @@ public class ItemController {
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", produces = "application/json")
     ResponseEntity<Item> update(@PathVariable("id") Long id, @RequestBody @Valid ItemDto itemDto) {
         try {
             Item item = itemService.update(id, itemDto);
@@ -121,7 +71,7 @@ public class ItemController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}", produces = "application/json")
     ResponseEntity remove(@PathVariable("id") Long id) {
         try {
             itemService.remove(id);

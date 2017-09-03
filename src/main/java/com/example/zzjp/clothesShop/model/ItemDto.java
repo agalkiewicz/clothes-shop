@@ -8,9 +8,8 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public class ItemDto {
+
     @NotBlank
-    @NotNull
-    @NotEmpty
     private String name;
 
     private Long categoryId;

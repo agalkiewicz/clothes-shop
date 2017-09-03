@@ -1,6 +1,6 @@
 package com.example.zzjp.clothesShop.unit;
 
-import com.example.zzjp.clothesShop.initializer.Constants;
+import com.example.zzjp.clothesShop.initializer.PropertiesValues;
 import com.example.zzjp.clothesShop.model.Category;
 import com.example.zzjp.clothesShop.model.Item;
 import com.example.zzjp.clothesShop.model.ItemDto;
@@ -50,39 +50,39 @@ public class ItemServiceUnitTest {
     @BeforeClass
     public static void initialize() {
         category1 = new Category();
-        category1.setName(Constants.CATEGORY_NAME_1);
-        category1.setId(Constants.CATEGORY_ID_1);
+        category1.setName(PropertiesValues.CATEGORY_NAME_1);
+        category1.setId(PropertiesValues.CATEGORY_ID_1);
 
         category2 = new Category();
-        category2.setName(Constants.CATEGORY_NAME_2);
-        category2.setId(Constants.CATEGORY_ID_2);
+        category2.setName(PropertiesValues.CATEGORY_NAME_2);
+        category2.setId(PropertiesValues.CATEGORY_ID_2);
 
         item1 = new Item();
-        item1.setId(Constants.ITEM_ID_1);
+        item1.setId(PropertiesValues.ITEM_ID_1);
         item1.setCategory(category1);
-        item1.setName(Constants.ITEM_NAME_1);
-        item1.setAmount(Constants.AMOUNT_1);
-        item1.setPrice(Constants.PRICE_1);
-        item1.setSize(Constants.SIZE_1);
-        item1.setColor(Constants.COLOR_1);
+        item1.setName(PropertiesValues.ITEM_NAME_1);
+        item1.setAmount(PropertiesValues.AMOUNT_1);
+        item1.setPrice(PropertiesValues.PRICE_1);
+        item1.setSize(PropertiesValues.SIZE_1);
+        item1.setColor(PropertiesValues.COLOR_1);
 
         item2 = new Item();
-        item2.setId(Constants.ITEM_ID_2);
+        item2.setId(PropertiesValues.ITEM_ID_2);
         item2.setCategory(category1);
-        item2.setName(Constants.ITEM_NAME_2);
-        item2.setAmount(Constants.AMOUNT_2);
-        item2.setPrice(Constants.PRICE_2);
-        item2.setSize(Constants.SIZE_1);
-        item2.setColor(Constants.COLOR_1);
+        item2.setName(PropertiesValues.ITEM_NAME_2);
+        item2.setAmount(PropertiesValues.AMOUNT_2);
+        item2.setPrice(PropertiesValues.PRICE_2);
+        item2.setSize(PropertiesValues.SIZE_1);
+        item2.setColor(PropertiesValues.COLOR_1);
 
         item3 = new Item();
-        item3.setId(Constants.ITEM_ID_3);
+        item3.setId(PropertiesValues.ITEM_ID_3);
         item3.setCategory(category2);
-        item3.setName(Constants.ITEM_NAME_3);
-        item3.setAmount(Constants.AMOUNT_2);
-        item3.setPrice(Constants.PRICE_2);
-        item3.setSize(Constants.SIZE_2);
-        item3.setColor(Constants.COLOR_2);
+        item3.setName(PropertiesValues.ITEM_NAME_3);
+        item3.setAmount(PropertiesValues.AMOUNT_2);
+        item3.setPrice(PropertiesValues.PRICE_2);
+        item3.setSize(PropertiesValues.SIZE_2);
+        item3.setColor(PropertiesValues.COLOR_2);
 
         items = Arrays.asList(item1, item2, item3);
     }
@@ -108,13 +108,13 @@ public class ItemServiceUnitTest {
 
     @Test
     public void shouldReturnItemById() {
-        when(itemRepository.findOne(Constants.ITEM_ID_1))
+        when(itemRepository.findOne(PropertiesValues.ITEM_ID_1))
                 .thenReturn(item1);
 
-        Item result = itemService.getById(Constants.ITEM_ID_1);
+        Item result = itemService.getById(PropertiesValues.ITEM_ID_1);
 
         verify(itemRepository)
-                .findOne(Constants.ITEM_ID_1);
+                .findOne(PropertiesValues.ITEM_ID_1);
 
         assertThat(result)
                 .isEqualTo(item1);
@@ -122,13 +122,13 @@ public class ItemServiceUnitTest {
 
     @Test
     public void shouldReturnItemByName() {
-        when(itemRepository.findByName(Constants.ITEM_NAME_1))
+        when(itemRepository.findByName(PropertiesValues.ITEM_NAME_1))
                 .thenReturn(item1);
 
-        Item result = itemService.getByName(Constants.ITEM_NAME_1);
+        Item result = itemService.getByName(PropertiesValues.ITEM_NAME_1);
 
         verify(itemRepository)
-                .findByName(Constants.ITEM_NAME_1);
+                .findByName(PropertiesValues.ITEM_NAME_1);
 
         assertThat(result)
                 .isEqualTo(item1);
@@ -138,13 +138,13 @@ public class ItemServiceUnitTest {
     public void shouldReturnItemsByCategoryId() {
         List<Item> items = Arrays.asList(item1, item2);
 
-        when(itemRepository.findByCategoryId(Constants.CATEGORY_ID_1))
+        when(itemRepository.findByCategoryId(PropertiesValues.CATEGORY_ID_1))
                 .thenReturn(items);
 
-        List<Item> result = itemService.getByCategoryId(Constants.CATEGORY_ID_1);
+        List<Item> result = itemService.getByCategoryId(PropertiesValues.CATEGORY_ID_1);
 
         verify(itemRepository)
-                .findByCategoryId(Constants.CATEGORY_ID_1);
+                .findByCategoryId(PropertiesValues.CATEGORY_ID_1);
 
         assertThat(result)
                 .isEqualTo(items);
@@ -154,13 +154,13 @@ public class ItemServiceUnitTest {
     public void shouldReturnItemsByPrice() {
         List<Item> items = Arrays.asList(item2, item3);
 
-        when(itemRepository.findByPrice(Constants.PRICE_2))
+        when(itemRepository.findByPrice(PropertiesValues.PRICE_2))
                 .thenReturn(items);
 
-        List<Item> result = itemService.getByPrice(Constants.PRICE_2);
+        List<Item> result = itemService.getByPrice(PropertiesValues.PRICE_2);
 
         verify(itemRepository)
-                .findByPrice(Constants.PRICE_2);
+                .findByPrice(PropertiesValues.PRICE_2);
 
         assertThat(result)
                 .isEqualTo(items);
@@ -170,13 +170,13 @@ public class ItemServiceUnitTest {
     public void shouldReturnItemsByPriceGreaterThan() {
         List<Item> items = Arrays.asList(item1);
 
-        when(itemRepository.findByPriceGreaterThan(Constants.PRICE_2))
+        when(itemRepository.findByPriceGreaterThan(PropertiesValues.PRICE_2))
                 .thenReturn(items);
 
-        List<Item> result = itemService.getByPriceGreaterThan(Constants.PRICE_2);
+        List<Item> result = itemService.getByPriceGreaterThan(PropertiesValues.PRICE_2);
 
         verify(itemRepository)
-                .findByPriceGreaterThan(Constants.PRICE_2);
+                .findByPriceGreaterThan(PropertiesValues.PRICE_2);
 
         assertThat(result)
                 .isEqualTo(items);
@@ -186,13 +186,13 @@ public class ItemServiceUnitTest {
     public void shouldReturnItemsByPriceLessThan() {
         List<Item> items = Arrays.asList(item2, item3);
 
-        when(itemRepository.findByPriceLessThan(Constants.PRICE_1))
+        when(itemRepository.findByPriceLessThan(PropertiesValues.PRICE_1))
                 .thenReturn(items);
 
-        List<Item> result = itemService.getByPriceLessThan(Constants.PRICE_1);
+        List<Item> result = itemService.getByPriceLessThan(PropertiesValues.PRICE_1);
 
         verify(itemRepository)
-                .findByPriceLessThan(Constants.PRICE_1);
+                .findByPriceLessThan(PropertiesValues.PRICE_1);
 
         assertThat(result)
                 .isEqualTo(items);
@@ -203,13 +203,13 @@ public class ItemServiceUnitTest {
         BigDecimal price1 = new BigDecimal("99.99");
         List<Item> items = Arrays.asList(item1);
 
-        when(itemRepository.findByPriceBetween(price1, Constants.PRICE_2))
+        when(itemRepository.findByPriceBetween(price1, PropertiesValues.PRICE_2))
                 .thenReturn(items);
 
-        List<Item> result = itemService.getByPriceBetween(price1, Constants.PRICE_2);
+        List<Item> result = itemService.getByPriceBetween(price1, PropertiesValues.PRICE_2);
 
         verify(itemRepository)
-                .findByPriceBetween(price1, Constants.PRICE_2);
+                .findByPriceBetween(price1, PropertiesValues.PRICE_2);
 
         assertThat(result)
                 .isEqualTo(items);
@@ -219,13 +219,13 @@ public class ItemServiceUnitTest {
     public void shouldReturnItemsByColor() {
         List<Item> items = Arrays.asList(item1, item2);
 
-        when(itemRepository.findByColor(Constants.COLOR_1))
+        when(itemRepository.findByColor(PropertiesValues.COLOR_1))
                 .thenReturn(items);
 
-        List<Item> result = itemService.getByColor(Constants.COLOR_1);
+        List<Item> result = itemService.getByColor(PropertiesValues.COLOR_1);
 
         verify(itemRepository)
-                .findByColor(Constants.COLOR_1);
+                .findByColor(PropertiesValues.COLOR_1);
 
         assertThat(result)
                 .isEqualTo(items);
@@ -235,13 +235,13 @@ public class ItemServiceUnitTest {
     public void shouldReturnItemsBySize() {
         List<Item> items = Arrays.asList(item1, item2);
 
-        when(itemRepository.findBySize(Constants.SIZE_1))
+        when(itemRepository.findBySize(PropertiesValues.SIZE_1))
                 .thenReturn(items);
 
-        List<Item> result = itemService.getBySize(Constants.SIZE_1);
+        List<Item> result = itemService.getBySize(PropertiesValues.SIZE_1);
 
         verify(itemRepository)
-                .findBySize(Constants.SIZE_1);
+                .findBySize(PropertiesValues.SIZE_1);
 
         assertThat(result)
                 .isEqualTo(items);
@@ -251,13 +251,13 @@ public class ItemServiceUnitTest {
     public void shouldReturnItemsByAmount() {
         List<Item> items = Arrays.asList(item2, item3);
 
-        when(itemRepository.findByAmount(Constants.AMOUNT_2))
+        when(itemRepository.findByAmount(PropertiesValues.AMOUNT_2))
                 .thenReturn(items);
 
-        List<Item> result = itemService.getByAmount(Constants.AMOUNT_2);
+        List<Item> result = itemService.getByAmount(PropertiesValues.AMOUNT_2);
 
         verify(itemRepository)
-                .findByAmount(Constants.AMOUNT_2);
+                .findByAmount(PropertiesValues.AMOUNT_2);
 
         assertThat(result)
                 .isEqualTo(items);
@@ -267,13 +267,13 @@ public class ItemServiceUnitTest {
     public void shouldReturnItemsByAmountGreaterThan() {
         List<Item> items = Arrays.asList(item2, item3);
 
-        when(itemRepository.findByAmountGreaterThan(Constants.AMOUNT_1))
+        when(itemRepository.findByAmountGreaterThan(PropertiesValues.AMOUNT_1))
                 .thenReturn(items);
 
-        List<Item> result = itemService.getByAmountGreaterThan(Constants.AMOUNT_1);
+        List<Item> result = itemService.getByAmountGreaterThan(PropertiesValues.AMOUNT_1);
 
         verify(itemRepository)
-                .findByAmountGreaterThan(Constants.AMOUNT_1);
+                .findByAmountGreaterThan(PropertiesValues.AMOUNT_1);
 
         assertThat(result)
                 .isEqualTo(items);
@@ -283,13 +283,13 @@ public class ItemServiceUnitTest {
     public void shouldReturnItemsByAmountLessThan() {
         List<Item> items = Arrays.asList(item1);
 
-        when(itemRepository.findByAmountLessThan(Constants.AMOUNT_2))
+        when(itemRepository.findByAmountLessThan(PropertiesValues.AMOUNT_2))
                 .thenReturn(items);
 
-        List<Item> result = itemService.getByAmountLessThan(Constants.AMOUNT_2);
+        List<Item> result = itemService.getByAmountLessThan(PropertiesValues.AMOUNT_2);
 
         verify(itemRepository)
-                .findByAmountLessThan(Constants.AMOUNT_2);
+                .findByAmountLessThan(PropertiesValues.AMOUNT_2);
 
         assertThat(result)
                 .isEqualTo(items);
@@ -299,7 +299,7 @@ public class ItemServiceUnitTest {
     public void shouldAddItem() {
         ItemDto itemDto = ObjectMock.mockItemDto();
 
-        Category category = new Category(Constants.CATEGORY_NAME_1);
+        Category category = new Category(PropertiesValues.CATEGORY_NAME_1);
         category.setId(itemDto.getCategoryId());
 
         Item item = new Item(itemDto);
@@ -335,7 +335,7 @@ public class ItemServiceUnitTest {
     public void shouldUpdateItem() {
         ItemDto itemDto = ObjectMock.mockItemDto();
 
-        Category category = new Category(Constants.CATEGORY_NAME_1);
+        Category category = new Category(PropertiesValues.CATEGORY_NAME_1);
         category.setId(itemDto.getCategoryId());
 
         Item item = new Item(itemDto);
