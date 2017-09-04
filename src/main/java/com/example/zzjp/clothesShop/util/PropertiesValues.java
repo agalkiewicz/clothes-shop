@@ -32,9 +32,12 @@ public class PropertiesValues {
     public static final String USERNAME_1 = "username1";
     public static final String USERNAME_2 = "username2";
     public static final String USERNAME_3 = "username3";
-    public static final String PASSSWORD_1 = "username1";
-    public static final String PASSSWORD_2 = "$2a$10$V4mtJwAbFRH4vEHbvBRofOnQx0Lr/zbTiIhgbUbgOwkbpYT1ucyVG";
-    public static final String PASSSWORD_3 = "$2a$10$7apGKsTG/V83mNDqZNCEr.JHZVJ0Dv7M/3cmJsO4C44HI4qj3ytW6";
+    public static final String PASSSWORD_1 = "password1";
+    public static final String PASSSWORD_2 = "password2";
+    public static final String PASSSWORD_3 = "password3";
+    public static final String PASSSWORD_HASH_1 = "$2a$10$EtHrLy2IAaAfKSqqdjQ19..Ie4HCOvDVaTGAtrCIWUaeJY8sthnbW";
+    public static final String PASSSWORD_HASH_2 = "$2a$10$V4mtJwAbFRH4vEHbvBRofOnQx0Lr/zbTiIhgbUbgOwkbpYT1ucyVG";
+    public static final String PASSSWORD_HASH_3 = "$2a$10$7apGKsTG/V83mNDqZNCEr.JHZVJ0Dv7M/3cmJsO4C44HI4qj3ytW6";
     public static final Role ROLE_1 = Role.ADMIN;
     public static final Role ROLE_2 = Role.USER;
     public static final Role ROLE_3 = Role.USER;

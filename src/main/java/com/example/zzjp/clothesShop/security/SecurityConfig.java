@@ -30,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 .and().authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/v1/users/").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/users/admin/*").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/api/v1/users/", "/api/v1/users/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/v1/categories/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/api/v1/categories/**").hasRole("ADMIN")

@@ -2,13 +2,10 @@ package com.example.zzjp.clothesShop.functional.users;
 
 import com.example.zzjp.clothesShop.functional.Setup;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
-import com.example.zzjp.clothesShop.model.User;
 import com.example.zzjp.clothesShop.repository.UserRepository;
 import com.example.zzjp.clothesShop.util.PropertiesValues;
 import com.example.zzjp.clothesShop.repository.CategoryRepository;
 import com.example.zzjp.clothesShop.repository.ItemRepository;
-import io.restassured.RestAssured;
-import io.restassured.parsing.Parser;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,10 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 
-import java.util.List;
-
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.core.IsCollectionContaining.hasItems;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -35,7 +29,7 @@ import static org.hamcrest.core.IsCollectionContaining.hasItems;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
 @Rollback
-public class UserGETGetAllEndpointTest {
+public class UserDELETERemoveEndpointTest {
 
     @LocalServerPort
     private int port;
@@ -64,29 +58,55 @@ public class UserGETGetAllEndpointTest {
     }
 
     @Test
-    public void shouldGetAllIUsersAsAdmin() {
+    public void asAdminShouldRemoveUser() {
         given()
                 .port(port)
                 .auth()
                 .preemptive()
                 .basic(PropertiesValues.USERNAME_1, PropertiesValues.PASSSWORD_1)
+                .pathParam("id", PropertiesValues.USER_ID_2)
                 .when()
-                .get("/")
+                .delete("/{id}")
                 .then()
-                .body("id", hasItems(1, 2, 3))
                 .statusCode(200);
     }
 
     @Test
-    public void shouldReturn401WhenNonAdminLoggedIn() {
+    public void shouldReturn401WhenUserNotAuthenticated() {
+        given()
+                .port(port)
+                .pathParam("id", PropertiesValues.USER_ID_2)
+                .when()
+                .delete("/{id}")
+                .then()
+                .statusCode(401);
+    }
+
+    @Test
+    public void asNonAdminShouldRemoveHimself() {
         given()
                 .port(port)
                 .auth()
                 .preemptive()
-                .basic(PropertiesValues.USERNAME_2, PropertiesValues.PASSSWORD_1)
+                .basic(PropertiesValues.USERNAME_2, PropertiesValues.PASSSWORD_2)
+                .pathParam("id", PropertiesValues.USER_ID_2)
                 .when()
-                .get("/")
+                .delete("/{id}")
                 .then()
-                .statusCode(401);
+                .statusCode(200);
+    }
+
+    @Test
+    public void asNonAdminShouldNotRemoveOtherUser() {
+        given()
+                .port(port)
+                .auth()
+                .preemptive()
+                .basic(PropertiesValues.USERNAME_2, PropertiesValues.PASSSWORD_2)
+                .pathParam("id", PropertiesValues.USER_ID_3)
+                .when()
+                .delete("/{id}")
+                .then()
+                .statusCode(403);
     }
 }

@@ -21,7 +21,6 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @JsonIgnore
     @NotBlank
     @Column(nullable = false, unique = true)
     private String username;

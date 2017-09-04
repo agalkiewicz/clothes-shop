@@ -1,5 +1,7 @@
 package com.example.zzjp.clothesShop.controller;
 
+import com.example.zzjp.clothesShop.model.UpdateUserPasswordDto;
+import com.example.zzjp.clothesShop.model.UpdateUsernameDto;
 import com.example.zzjp.clothesShop.model.User;
 import com.example.zzjp.clothesShop.model.UserDto;
 import com.example.zzjp.clothesShop.service.UserService;
@@ -93,9 +95,9 @@ public class UserController {
     @PutMapping("{id}/password")
     @PreAuthorize("@permissionChecker.hasAuthorityToModifyUser(principal, #id) ")
     public ResponseEntity<User> updatePassword(@PathVariable final long id,
-                                               @RequestBody @NotBlank final String newPassword) {
+                                               @RequestBody @Valid final UpdateUserPasswordDto updateUserPasswordDto) {
         try {
-            User user = userService.updatePassword(id, newPassword);
+            User user = userService.updatePassword(id, updateUserPasswordDto.getPassword());
 
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch(Exception e) {
@@ -106,9 +108,9 @@ public class UserController {
     @PutMapping("{id}/username")
     @PreAuthorize("@permissionChecker.hasAuthorityToModifyUser(principal, #id) ")
     public ResponseEntity<User> updateUsername(@PathVariable final long id,
-                                               @RequestBody @NotBlank final String newUsername) {
+                                               @RequestBody @Valid final UpdateUsernameDto updateUsernameDto) {
         try {
-            User user = userService.updateUsername(id, newUsername);
+            User user = userService.updateUsername(id, updateUsernameDto.getUsername());
 
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch(Exception e) {
