@@ -1,6 +1,8 @@
 package com.example.zzjp.clothesShop;
 
-import com.example.zzjp.clothesShop.initializer.PropertiesValues;
+import com.example.zzjp.clothesShop.model.User;
+import com.example.zzjp.clothesShop.repository.UserRepository;
+import com.example.zzjp.clothesShop.util.PropertiesValues;
 import com.example.zzjp.clothesShop.model.Category;
 import com.example.zzjp.clothesShop.model.Item;
 import com.example.zzjp.clothesShop.repository.CategoryRepository;
@@ -9,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
 
@@ -24,6 +29,17 @@ public class ClothesShopApplication implements CommandLineRunner {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
+//	@Autowired
+//	private PasswordEncoder passwordEncoder;
+
+	@Bean
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -65,5 +81,28 @@ public class ClothesShopApplication implements CommandLineRunner {
 		item3.setColor(PropertiesValues.COLOR_2);
 
 		itemRepository.save(Arrays.asList(item1, item2, item3));
+
+		User user1 = new User();
+		user1.setId(PropertiesValues.USER_ID_1);
+		user1.setUsername(PropertiesValues.USERNAME_1);
+		String password = passwordEncoder().encode(PropertiesValues.PASSSWORD_1);
+		user1.setPassword(password);
+		user1.addRole(PropertiesValues.ROLE_1);
+
+		User user2 = new User();
+		user2.setId(PropertiesValues.USER_ID_2);
+		user2.setUsername(PropertiesValues.USERNAME_2);
+		password = passwordEncoder().encode(PropertiesValues.PASSSWORD_2);
+		user2.setPassword(password);
+		user2.addRole(PropertiesValues.ROLE_2);
+
+		User user3 = new User();
+		user3.setId(PropertiesValues.USER_ID_3);
+		user3.setUsername(PropertiesValues.USERNAME_3);
+		password = passwordEncoder().encode(PropertiesValues.PASSSWORD_3);
+		user3.setPassword(password);
+		user3.addRole(PropertiesValues.ROLE_3);
+
+		userRepository.save(Arrays.asList(user1, user2, user3));
 	}
 }

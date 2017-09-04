@@ -1,8 +1,9 @@
-package com.example.zzjp.clothesShop.functional;
+package com.example.zzjp.clothesShop.functional.users;
 
 import com.example.zzjp.clothesShop.functional.Setup;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
-import com.example.zzjp.clothesShop.initializer.PropertiesValues;
+import com.example.zzjp.clothesShop.repository.UserRepository;
+import com.example.zzjp.clothesShop.util.PropertiesValues;
 import com.example.zzjp.clothesShop.repository.CategoryRepository;
 import com.example.zzjp.clothesShop.repository.ItemRepository;
 import org.junit.BeforeClass;
@@ -11,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
@@ -28,7 +30,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
 @Rollback
-public class CategoryGETGetByIdEndpointTest {
+public class UserGETGetByIdEndpointTest {
 
     @LocalServerPort
     private int port;
@@ -39,22 +41,31 @@ public class CategoryGETGetByIdEndpointTest {
     @Autowired
     private ItemRepository itemRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostConstruct
     public void initializeDB() {
-        DatabaseInitializer databaseInitializer = new DatabaseInitializer(itemRepository, categoryRepository);
+        DatabaseInitializer databaseInitializer = new DatabaseInitializer(itemRepository, categoryRepository, userRepository, passwordEncoder);
         databaseInitializer.initializeDB();
     }
 
     @BeforeClass
     public static void setup() {
-        Setup.setup("/api/v1/categories");
+        Setup.setup("/api/v1/users");
     }
 
     @Test
-    public void shouldReturnCategoryWhenIdExists() {
+    public void shouldReturnUserWhenIdExists() {
         given()
                 .port(port)
-                .pathParam("id", 1)
+                .auth()
+                .preemptive()
+                .basic(PropertiesValues.USERNAME_1, PropertiesValues.PASSSWORD_1)
+                .pathParam("id", PropertiesValues.USER_ID_1)
                 .when()
                 .get("/{id}")
                 .then()
@@ -65,6 +76,9 @@ public class CategoryGETGetByIdEndpointTest {
     public void shouldReturn404WhenIdNotExists() {
         given()
                 .port(port)
+                .auth()
+                .preemptive()
+                .basic(PropertiesValues.USERNAME_1, PropertiesValues.PASSSWORD_1)
                 .pathParam("id", 1000)
                 .when()
                 .get("/{id}")
@@ -73,13 +87,27 @@ public class CategoryGETGetByIdEndpointTest {
     }
 
     @Test
-    public void shouldReturnProperCategoryWhenIdExists() {
+    public void shouldReturnProperUserWhenIdExists() {
         given()
                 .port(port)
-                .pathParam("id", 1)
+                .auth()
+                .preemptive()
+                .basic(PropertiesValues.USERNAME_1, PropertiesValues.PASSSWORD_1)
+                .pathParam("id", PropertiesValues.USER_ID_1)
                 .when()
                 .get("/{id}")
                 .then()
-                .body("name", equalTo(PropertiesValues.CATEGORY_NAME_1));
+                .body("username", equalTo(PropertiesValues.USERNAME_1));
+    }
+
+    @Test
+    public void shouldReturn401WhenNonAdminLoggedIn() {
+        given()
+                .port(port)
+                .pathParam("id", PropertiesValues.USER_ID_1)
+                .when()
+                .get("/{id}")
+                .then()
+                .statusCode(401);
     }
 }

@@ -1,7 +1,9 @@
-package com.example.zzjp.clothesShop.functional;
+package com.example.zzjp.clothesShop.functional.items;
 
 import com.example.zzjp.clothesShop.functional.Setup;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
+import com.example.zzjp.clothesShop.repository.UserRepository;
+import com.example.zzjp.clothesShop.util.PropertiesValues;
 import com.example.zzjp.clothesShop.repository.CategoryRepository;
 import com.example.zzjp.clothesShop.repository.ItemRepository;
 import org.junit.BeforeClass;
@@ -10,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
@@ -27,7 +30,7 @@ import static org.hamcrest.core.IsCollectionContaining.hasItems;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
 @Rollback
-public class CategoryGETGetItemsByCategoryEndpointTest {
+public class ItemGETGetAllEndpointTest {
 
     @LocalServerPort
     private int port;
@@ -38,26 +41,35 @@ public class CategoryGETGetItemsByCategoryEndpointTest {
     @Autowired
     private ItemRepository itemRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostConstruct
     public void initializeDB() {
-        DatabaseInitializer databaseInitializer = new DatabaseInitializer(itemRepository, categoryRepository);
+        DatabaseInitializer databaseInitializer = new DatabaseInitializer(itemRepository, categoryRepository, userRepository, passwordEncoder);
         databaseInitializer.initializeDB();
     }
 
     @BeforeClass
     public static void setup() {
-        Setup.setup("/api/v1/categories");
+        Setup.setup("/api/v1/items");
     }
 
     @Test
-    public void shouldReturnItemsByCategory() {
+    public void shouldReturnAllItems() {
         given()
                 .port(port)
-                .pathParam("id", 1)
                 .when()
-                .get("/{id}/items")
+                .get("/")
                 .then()
-                .body("id", hasItems(1, 2))
+                .body("name", hasItems(
+                        PropertiesValues.ITEM_NAME_1,
+                        PropertiesValues.ITEM_NAME_2,
+                        PropertiesValues.ITEM_NAME_3
+                ))
                 .statusCode(200);
     }
 }

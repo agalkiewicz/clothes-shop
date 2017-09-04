@@ -1,16 +1,20 @@
-package com.example.zzjp.clothesShop.functional.category;
+package com.example.zzjp.clothesShop.functional.users;
 
 import com.example.zzjp.clothesShop.functional.Setup;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
-import com.example.zzjp.clothesShop.initializer.PropertiesValues;
+import com.example.zzjp.clothesShop.model.CategoryDto;
+import com.example.zzjp.clothesShop.model.UserDto;
 import com.example.zzjp.clothesShop.repository.CategoryRepository;
 import com.example.zzjp.clothesShop.repository.ItemRepository;
+import com.example.zzjp.clothesShop.repository.UserRepository;
+import com.example.zzjp.clothesShop.util.PropertiesValues;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
@@ -20,7 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.core.IsCollectionContaining.hasItems;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNull.notNullValue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -28,7 +33,7 @@ import static org.hamcrest.core.IsCollectionContaining.hasItems;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
 @Rollback
-public class ItemGETGetAllEndpointTest {
+public class UserPOSTRegisterEndpointTest {
 
     @LocalServerPort
     private int port;
@@ -39,29 +44,50 @@ public class ItemGETGetAllEndpointTest {
     @Autowired
     private ItemRepository itemRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostConstruct
     public void initializeDB() {
-        DatabaseInitializer databaseInitializer = new DatabaseInitializer(itemRepository, categoryRepository);
+        DatabaseInitializer databaseInitializer = new DatabaseInitializer(itemRepository, categoryRepository, userRepository, passwordEncoder);
         databaseInitializer.initializeDB();
     }
 
     @BeforeClass
     public static void setup() {
-        Setup.setup("/api/v1/items");
+        Setup.setup("/api/v1/users");
     }
 
     @Test
-    public void shouldReturnAllItems() {
+    public void shouldRegisterUser() {
+        String username = "zielona12";
+        String password = "trudne_hasło";
+
         given()
                 .port(port)
+                .contentType("application/json")
+                .body(new UserDto(username, password))
                 .when()
-                .get("/")
+                .post("/")
                 .then()
-                .body("name", hasItems(
-                        PropertiesValues.ITEM_NAME_1,
-                        PropertiesValues.ITEM_NAME_2,
-                        PropertiesValues.ITEM_NAME_3
-                ))
+                .body("id", notNullValue())
+                .body("username", equalTo(username))
                 .statusCode(200);
+    }
+
+    @Test
+    public void shouldReturn400WhenUserIncomplete() {
+        given()
+                .port(port)
+                .contentType("application/json")
+                .body(new UserDto())
+                .when()
+                .post("/")
+                .then()
+                .statusCode(400);
+
     }
 }

@@ -1,7 +1,8 @@
 package com.example.zzjp.clothesShop.integration;
 
 import com.example.zzjp.clothesShop.ClothesShopApplication;
-import com.example.zzjp.clothesShop.initializer.PropertiesValues;
+import com.example.zzjp.clothesShop.repository.UserRepository;
+import com.example.zzjp.clothesShop.util.PropertiesValues;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
 import com.example.zzjp.clothesShop.model.Item;
 import com.example.zzjp.clothesShop.model.ItemDto;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -40,9 +42,15 @@ public class ItemServiceIntegrationTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostConstruct
     public void initializeDB() {
-        DatabaseInitializer databaseInitializer = new DatabaseInitializer(itemRepository,categoryRepository);
+        DatabaseInitializer databaseInitializer = new DatabaseInitializer(itemRepository, categoryRepository, userRepository, passwordEncoder);
         databaseInitializer.initializeDB();
     }
 
@@ -189,14 +197,13 @@ public class ItemServiceIntegrationTest {
         itemDto.setSize(Size.L);
         itemDto.setPrice(new BigDecimal("49.99"));
 
+        List<Item> itemsBefore = itemRepository.findAll();
         Item result = itemService.add(itemDto);
+        List<Item> itemsAfter = itemRepository.findAll();
 
-        List<Item> items = itemRepository.findAll();
-        Item item = itemRepository.findByName(name);
-
-        assertThat(items.size())
-                .isEqualTo(4);
-        assertThat(item)
+        assertThat(itemsBefore.size())
+                .isNotEqualTo(itemsAfter.size());
+        assertThat(result)
                 .isNotNull();
     }
 
