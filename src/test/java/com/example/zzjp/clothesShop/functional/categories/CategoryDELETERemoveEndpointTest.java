@@ -1,9 +1,9 @@
-package com.example.zzjp.clothesShop.functional;
+package com.example.zzjp.clothesShop.functional.categories;
 
 import com.example.zzjp.clothesShop.functional.Setup;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
-import com.example.zzjp.clothesShop.initializer.PropertiesValues;
-import com.example.zzjp.clothesShop.model.Item;
+import com.example.zzjp.clothesShop.repository.UserRepository;
+import com.example.zzjp.clothesShop.util.PropertiesValues;
 import com.example.zzjp.clothesShop.repository.CategoryRepository;
 import com.example.zzjp.clothesShop.repository.ItemRepository;
 import org.junit.BeforeClass;
@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
@@ -20,12 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 
-import java.math.BigDecimal;
-
 import static io.restassured.RestAssured.given;
-import static junit.framework.TestCase.assertTrue;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsCollectionContaining.hasItems;
+import static org.hamcrest.core.IsNull.notNullValue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -33,7 +31,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
 @Rollback
-public class ItemGETGetByIdEndpointTest {
+public class CategoryDELETERemoveEndpointTest {
 
     @LocalServerPort
     private int port;
@@ -44,55 +42,62 @@ public class ItemGETGetByIdEndpointTest {
     @Autowired
     private ItemRepository itemRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostConstruct
     public void initializeDB() {
-        DatabaseInitializer databaseInitializer = new DatabaseInitializer(itemRepository, categoryRepository);
+        DatabaseInitializer databaseInitializer = new DatabaseInitializer(itemRepository, categoryRepository, userRepository, passwordEncoder);
         databaseInitializer.initializeDB();
     }
 
     @BeforeClass
     public static void setup() {
-        Setup.setup("/api/v1/items");
+        Setup.setup("/api/v1/categories");
     }
 
     @Test
-    public void shouldReturnItemWhenIdExists() {
+    public void shouldRemoveCategoryWithoutItemsAsAdmin() {
         given()
                 .port(port)
-                .pathParam("id", 1)
+                .auth()
+                .preemptive()
+                .basic(PropertiesValues.USERNAME_1, PropertiesValues.PASSSWORD_1)
+                .pathParam("id", PropertiesValues.CATEGORY_ID_3)
                 .when()
-                .get("/{id}")
+                .delete("/{id}")
                 .then()
                 .statusCode(200);
     }
 
     @Test
-    public void shouldReturn404WhenIdNotExists() {
+    public void shouldReturn500WhenCategoryHasItems() {
         given()
                 .port(port)
-                .pathParam("id", 1000)
+                .auth()
+                .preemptive()
+                .basic(PropertiesValues.USERNAME_1, PropertiesValues.PASSSWORD_1)
+                .pathParam("id", PropertiesValues.CATEGORY_ID_1)
                 .when()
-                .get("/{id}")
+                .delete("/{id}")
                 .then()
-                .statusCode(404);
+                .statusCode(500);
     }
 
     @Test
-    public void shouldReturnProperItemWhenIdExists() {
-        long id = 1;
-        Item item = given()
+    public void shouldReturn403WhenNonAdminLoggedIn() {
+        given()
                 .port(port)
-                .pathParam("id", id)
+                .auth()
+                .preemptive()
+                .basic(PropertiesValues.USERNAME_2, PropertiesValues.PASSSWORD_2)
+                .pathParam("id", PropertiesValues.CATEGORY_ID_3)
                 .when()
-                .get("/{id}")
-                .as(Item.class);
-
-        assertTrue(item.getId().equals(PropertiesValues.ITEM_ID_1));
-        assertTrue(item.getName().equals(PropertiesValues.ITEM_NAME_1));
-        assertTrue(item.getAmount() == PropertiesValues.AMOUNT_1);
-        assertTrue(item.getPrice().equals(PropertiesValues.PRICE_1));
-        assertTrue(item.getColor().equals(PropertiesValues.COLOR_1));
-        assertTrue(item.getSize().equals(PropertiesValues.SIZE_1));
-        assertTrue(item.getCategory().getId().equals(PropertiesValues.CATEGORY_ID_1));
+                .delete("/{id}")
+                .then()
+                .statusCode(403);
     }
 }

@@ -1,6 +1,6 @@
 package com.example.zzjp.clothesShop.unit;
 
-import com.example.zzjp.clothesShop.initializer.PropertiesValues;
+import com.example.zzjp.clothesShop.util.PropertiesValues;
 import com.example.zzjp.clothesShop.model.Category;
 import com.example.zzjp.clothesShop.model.Item;
 import com.example.zzjp.clothesShop.model.ItemDto;

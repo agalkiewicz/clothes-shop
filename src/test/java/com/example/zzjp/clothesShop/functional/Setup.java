@@ -1,6 +1,9 @@
 package com.example.zzjp.clothesShop.functional;
 
 import io.restassured.RestAssured;
+import io.restassured.parsing.Parser;
+
+import static io.restassured.RestAssured.basic;
 
 public class Setup {
 
@@ -24,5 +27,7 @@ public class Setup {
             baseHost = "http://localhost";
         }
         RestAssured.baseURI = baseHost;
+
+        RestAssured.registerParser("application/json", Parser.JSON);
     }
 }

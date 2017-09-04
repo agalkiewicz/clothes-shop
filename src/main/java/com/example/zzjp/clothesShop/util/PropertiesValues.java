@@ -1,5 +1,6 @@
-package com.example.zzjp.clothesShop.initializer;
+package com.example.zzjp.clothesShop.util;
 
+import com.example.zzjp.clothesShop.model.Role;
 import com.example.zzjp.clothesShop.model.Size;
 
 import java.math.BigDecimal;
@@ -28,4 +29,16 @@ public class PropertiesValues {
     public static final String COLOR_2 = "pink";
     public static final int NUMBER_OF_CATEGORIES = 3;
     public static final int NUMBER_OF_ITEMS = 3;
+    public static final String USERNAME_1 = "username1";
+    public static final String USERNAME_2 = "username2";
+    public static final String USERNAME_3 = "username3";
+    public static final String PASSSWORD_1 = "username1";
+    public static final String PASSSWORD_2 = "$2a$10$V4mtJwAbFRH4vEHbvBRofOnQx0Lr/zbTiIhgbUbgOwkbpYT1ucyVG";
+    public static final String PASSSWORD_3 = "$2a$10$7apGKsTG/V83mNDqZNCEr.JHZVJ0Dv7M/3cmJsO4C44HI4qj3ytW6";
+    public static final Role ROLE_1 = Role.ADMIN;
+    public static final Role ROLE_2 = Role.USER;
+    public static final Role ROLE_3 = Role.USER;
+    public static final Long USER_ID_1 = 1L;
+    public static final Long USER_ID_2 = 2L;
+    public static final Long USER_ID_3 = 3L;
 }

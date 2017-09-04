@@ -1,4 +1,4 @@
-package com.example.zzjp.clothesShop.functional;
+package com.example.zzjp.clothesShop.functional.items;
 
 import com.example.zzjp.clothesShop.functional.Setup;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
@@ -7,13 +7,16 @@ import com.example.zzjp.clothesShop.model.Item;
 import com.example.zzjp.clothesShop.model.ItemDto;
 import com.example.zzjp.clothesShop.repository.CategoryRepository;
 import com.example.zzjp.clothesShop.repository.ItemRepository;
+import com.example.zzjp.clothesShop.repository.UserRepository;
 import com.example.zzjp.clothesShop.util.ObjectMock;
+import com.example.zzjp.clothesShop.util.PropertiesValues;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
@@ -46,9 +49,15 @@ public class ItemPUTUpdateEndpointTest {
     @Autowired
     private ItemRepository itemRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostConstruct
     public void initializeDB() {
-        DatabaseInitializer databaseInitializer = new DatabaseInitializer(itemRepository, categoryRepository);
+        DatabaseInitializer databaseInitializer = new DatabaseInitializer(itemRepository, categoryRepository, userRepository, passwordEncoder);
         databaseInitializer.initializeDB();
     }
 
@@ -61,6 +70,9 @@ public class ItemPUTUpdateEndpointTest {
     public void shouldUpdateItem() {
         Item item = given()
                 .port(port)
+                .auth()
+                .preemptive()
+                .basic(PropertiesValues.USERNAME_1, PropertiesValues.PASSSWORD_1)
                 .contentType("application/json")
                 .pathParam("id", id)
                 .body(ObjectMock.mockItemDto())
@@ -79,6 +91,9 @@ public class ItemPUTUpdateEndpointTest {
     public void shouldReturn500WhenIdNotExists() {
         given()
                 .port(port)
+                .auth()
+                .preemptive()
+                .basic(PropertiesValues.USERNAME_1, PropertiesValues.PASSSWORD_1)
                 .contentType("application/json")
                 .pathParam("id", 1000)
                 .body(ObjectMock.mockItemDto())
@@ -92,6 +107,9 @@ public class ItemPUTUpdateEndpointTest {
     public void shouldReturn400WhenItemIncomplete() {
         given()
                 .port(port)
+                .auth()
+                .preemptive()
+                .basic(PropertiesValues.USERNAME_1, PropertiesValues.PASSSWORD_1)
                 .contentType("application/json")
                 .pathParam("id", id)
                 .body(new ItemDto())
@@ -99,5 +117,21 @@ public class ItemPUTUpdateEndpointTest {
                 .put("/{id}")
                 .then()
                 .statusCode(400);
+    }
+
+    @Test
+    public void shouldReturn403WhenNonAdminLoggedIn() {
+        given()
+                .port(port)
+                .auth()
+                .preemptive()
+                .basic(PropertiesValues.USERNAME_2, PropertiesValues.PASSSWORD_2)
+                .contentType("application/json")
+                .pathParam("id", id)
+                .body(ObjectMock.mockItemDto())
+                .when()
+                .put("/{id}")
+                .then()
+                .statusCode(403);
     }
 }
