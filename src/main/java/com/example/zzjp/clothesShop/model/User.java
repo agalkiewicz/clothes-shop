@@ -1,7 +1,6 @@
 package com.example.zzjp.clothesShop.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.validator.constraints.Length;
+import com.example.zzjp.clothesShop.dto.UserDto;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

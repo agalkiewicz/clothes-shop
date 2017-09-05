@@ -1,8 +1,7 @@
 package com.example.zzjp.clothesShop.service;
 
 import com.example.zzjp.clothesShop.model.Category;
-import com.example.zzjp.clothesShop.model.CategoryDto;
-import com.example.zzjp.clothesShop.model.Item;
+import com.example.zzjp.clothesShop.dto.CategoryDto;
 import com.example.zzjp.clothesShop.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

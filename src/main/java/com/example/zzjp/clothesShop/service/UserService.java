@@ -2,7 +2,7 @@ package com.example.zzjp.clothesShop.service;
 
 import com.example.zzjp.clothesShop.model.Role;
 import com.example.zzjp.clothesShop.model.User;
-import com.example.zzjp.clothesShop.model.UserDto;
+import com.example.zzjp.clothesShop.dto.UserDto;
 import com.example.zzjp.clothesShop.repository.UserRepository;
 import com.example.zzjp.clothesShop.util.UserFactory;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

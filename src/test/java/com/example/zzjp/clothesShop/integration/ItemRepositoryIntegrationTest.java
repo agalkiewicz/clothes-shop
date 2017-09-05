@@ -120,40 +120,6 @@ public class ItemRepositoryIntegrationTest {
     }
 
     @Test
-    public void shouldReturnAllItemsByAmount() {
-        List<Item> result = itemRepository.findByAmount(PropertiesValues.AMOUNT_2);
-
-        assertThat(result.size())
-                .isEqualTo(2);
-        assertThat(result.get(0).getAmount())
-                .isEqualTo(PropertiesValues.AMOUNT_2);
-        assertThat(result.get(1).getAmount())
-                .isEqualTo(PropertiesValues.AMOUNT_2);
-    }
-
-    @Test
-    public void shouldReturnAllItemsByAmountGreaterThan() {
-        List<Item> result = itemRepository.findByAmountGreaterThan(PropertiesValues.AMOUNT_1);
-
-        assertThat(result.size())
-                .isEqualTo(2);
-        assertThat(result.get(0).getAmount())
-                .isEqualTo(PropertiesValues.AMOUNT_2);
-        assertThat(result.get(1).getAmount())
-                .isEqualTo(PropertiesValues.AMOUNT_2);
-    }
-
-    @Test
-    public void shouldReturnAllItemsByAmountLessThan() {
-        List<Item> result = itemRepository.findByAmountLessThan(PropertiesValues.AMOUNT_2);
-
-        assertThat(result.size())
-                .isEqualTo(1);
-        assertThat(result.get(0).getAmount())
-                .isEqualTo(PropertiesValues.AMOUNT_1);
-    }
-
-    @Test
     public void shouldReturnItemByName() {
         Item result = itemRepository.findByName(PropertiesValues.ITEM_NAME_1);
 

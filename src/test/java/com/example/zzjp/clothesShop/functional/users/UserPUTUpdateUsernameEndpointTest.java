@@ -2,8 +2,7 @@ package com.example.zzjp.clothesShop.functional.users;
 
 import com.example.zzjp.clothesShop.functional.Setup;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
-import com.example.zzjp.clothesShop.model.UpdateUserPasswordDto;
-import com.example.zzjp.clothesShop.model.UpdateUsernameDto;
+import com.example.zzjp.clothesShop.dto.UpdateUsernameDto;
 import com.example.zzjp.clothesShop.repository.CategoryRepository;
 import com.example.zzjp.clothesShop.repository.ItemRepository;
 import com.example.zzjp.clothesShop.repository.UserRepository;

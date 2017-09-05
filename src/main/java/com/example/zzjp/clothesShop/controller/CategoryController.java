@@ -1,7 +1,7 @@
 package com.example.zzjp.clothesShop.controller;
 
 import com.example.zzjp.clothesShop.model.Category;
-import com.example.zzjp.clothesShop.model.CategoryDto;
+import com.example.zzjp.clothesShop.dto.CategoryDto;
 import com.example.zzjp.clothesShop.model.Item;
 import com.example.zzjp.clothesShop.service.CategoryService;
 import com.example.zzjp.clothesShop.service.ItemService;

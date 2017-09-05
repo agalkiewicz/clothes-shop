@@ -2,9 +2,8 @@ package com.example.zzjp.clothesShop.functional.items;
 
 import com.example.zzjp.clothesShop.functional.Setup;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
-import com.example.zzjp.clothesShop.model.CategoryDto;
 import com.example.zzjp.clothesShop.model.Item;
-import com.example.zzjp.clothesShop.model.ItemDto;
+import com.example.zzjp.clothesShop.dto.ItemDto;
 import com.example.zzjp.clothesShop.repository.CategoryRepository;
 import com.example.zzjp.clothesShop.repository.ItemRepository;
 import com.example.zzjp.clothesShop.repository.UserRepository;
@@ -28,7 +27,6 @@ import javax.annotation.PostConstruct;
 import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
-import static org.hamcrest.core.IsEqual.equalTo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -82,7 +80,6 @@ public class ItemPUTUpdateEndpointTest {
 
         assertTrue(item.getId() != null);
         assertTrue(item.getPrice().equals(ObjectMock.ITEM_DTO_PRICE));
-        assertTrue(item.getAmount() == ObjectMock.ITEM_DTO_AMOUNT);
         assertTrue(item.getName().equals(ObjectMock.ITEM_DTO_NAME));
         assertTrue(item.getCategory().getId().equals(ObjectMock.ITEM_DTO_CATEGORY_ID));
     }

@@ -2,8 +2,7 @@ package com.example.zzjp.clothesShop.functional.items;
 
 import com.example.zzjp.clothesShop.functional.Setup;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
-import com.example.zzjp.clothesShop.model.CategoryDto;
-import com.example.zzjp.clothesShop.model.ItemDto;
+import com.example.zzjp.clothesShop.dto.ItemDto;
 import com.example.zzjp.clothesShop.repository.CategoryRepository;
 import com.example.zzjp.clothesShop.repository.ItemRepository;
 import com.example.zzjp.clothesShop.repository.UserRepository;

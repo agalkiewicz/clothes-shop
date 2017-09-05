@@ -3,7 +3,7 @@ package com.example.zzjp.clothesShop.unit;
 import com.example.zzjp.clothesShop.util.PropertiesValues;
 import com.example.zzjp.clothesShop.model.Category;
 import com.example.zzjp.clothesShop.model.Item;
-import com.example.zzjp.clothesShop.model.ItemDto;
+import com.example.zzjp.clothesShop.dto.ItemDto;
 import com.example.zzjp.clothesShop.repository.ItemRepository;
 import com.example.zzjp.clothesShop.service.CategoryService;
 import com.example.zzjp.clothesShop.service.ItemService;
@@ -61,7 +61,6 @@ public class ItemServiceUnitTest {
         item1.setId(PropertiesValues.ITEM_ID_1);
         item1.setCategory(category1);
         item1.setName(PropertiesValues.ITEM_NAME_1);
-        item1.setAmount(PropertiesValues.AMOUNT_1);
         item1.setPrice(PropertiesValues.PRICE_1);
         item1.setSize(PropertiesValues.SIZE_1);
         item1.setColor(PropertiesValues.COLOR_1);
@@ -70,7 +69,6 @@ public class ItemServiceUnitTest {
         item2.setId(PropertiesValues.ITEM_ID_2);
         item2.setCategory(category1);
         item2.setName(PropertiesValues.ITEM_NAME_2);
-        item2.setAmount(PropertiesValues.AMOUNT_2);
         item2.setPrice(PropertiesValues.PRICE_2);
         item2.setSize(PropertiesValues.SIZE_1);
         item2.setColor(PropertiesValues.COLOR_1);
@@ -79,7 +77,6 @@ public class ItemServiceUnitTest {
         item3.setId(PropertiesValues.ITEM_ID_3);
         item3.setCategory(category2);
         item3.setName(PropertiesValues.ITEM_NAME_3);
-        item3.setAmount(PropertiesValues.AMOUNT_2);
         item3.setPrice(PropertiesValues.PRICE_2);
         item3.setSize(PropertiesValues.SIZE_2);
         item3.setColor(PropertiesValues.COLOR_2);
@@ -248,54 +245,6 @@ public class ItemServiceUnitTest {
     }
 
     @Test
-    public void shouldReturnItemsByAmount() {
-        List<Item> items = Arrays.asList(item2, item3);
-
-        when(itemRepository.findByAmount(PropertiesValues.AMOUNT_2))
-                .thenReturn(items);
-
-        List<Item> result = itemService.getByAmount(PropertiesValues.AMOUNT_2);
-
-        verify(itemRepository)
-                .findByAmount(PropertiesValues.AMOUNT_2);
-
-        assertThat(result)
-                .isEqualTo(items);
-    }
-
-    @Test
-    public void shouldReturnItemsByAmountGreaterThan() {
-        List<Item> items = Arrays.asList(item2, item3);
-
-        when(itemRepository.findByAmountGreaterThan(PropertiesValues.AMOUNT_1))
-                .thenReturn(items);
-
-        List<Item> result = itemService.getByAmountGreaterThan(PropertiesValues.AMOUNT_1);
-
-        verify(itemRepository)
-                .findByAmountGreaterThan(PropertiesValues.AMOUNT_1);
-
-        assertThat(result)
-                .isEqualTo(items);
-    }
-
-    @Test
-    public void shouldReturnItemsByAmountLessThan() {
-        List<Item> items = Arrays.asList(item1);
-
-        when(itemRepository.findByAmountLessThan(PropertiesValues.AMOUNT_2))
-                .thenReturn(items);
-
-        List<Item> result = itemService.getByAmountLessThan(PropertiesValues.AMOUNT_2);
-
-        verify(itemRepository)
-                .findByAmountLessThan(PropertiesValues.AMOUNT_2);
-
-        assertThat(result)
-                .isEqualTo(items);
-    }
-
-    @Test
     public void shouldAddItem() {
         ItemDto itemDto = ObjectMock.mockItemDto();
 
@@ -325,8 +274,6 @@ public class ItemServiceUnitTest {
                 .isEqualTo(ObjectMock.ITEM_DTO_NAME);
         assertThat(result.getPrice())
                 .isEqualTo(ObjectMock.ITEM_DTO_PRICE);
-        assertThat(result.getAmount())
-                .isEqualTo(ObjectMock.ITEM_DTO_AMOUNT);
         assertThat(result.getCategory().getId())
                 .isEqualTo(ObjectMock.ITEM_DTO_CATEGORY_ID);
     }
@@ -371,8 +318,6 @@ public class ItemServiceUnitTest {
                 .isEqualTo(ObjectMock.ITEM_DTO_NAME);
         assertThat(result.getPrice())
                 .isEqualTo(ObjectMock.ITEM_DTO_PRICE);
-        assertThat(result.getAmount())
-                .isEqualTo(ObjectMock.ITEM_DTO_AMOUNT);
         assertThat(result.getCategory().getId())
                 .isEqualTo(ObjectMock.ITEM_DTO_CATEGORY_ID);
 

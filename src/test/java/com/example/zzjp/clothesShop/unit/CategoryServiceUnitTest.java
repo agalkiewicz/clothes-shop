@@ -1,7 +1,7 @@
 package com.example.zzjp.clothesShop.unit;
 
 import com.example.zzjp.clothesShop.model.Category;
-import com.example.zzjp.clothesShop.model.CategoryDto;
+import com.example.zzjp.clothesShop.dto.CategoryDto;
 import com.example.zzjp.clothesShop.repository.CategoryRepository;
 import com.example.zzjp.clothesShop.service.CategoryService;
 import org.junit.Before;

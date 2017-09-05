@@ -1,11 +1,10 @@
 package com.example.zzjp.clothesShop.controller;
 
-import com.example.zzjp.clothesShop.model.UpdateUserPasswordDto;
-import com.example.zzjp.clothesShop.model.UpdateUsernameDto;
+import com.example.zzjp.clothesShop.dto.UpdateUserPasswordDto;
+import com.example.zzjp.clothesShop.dto.UpdateUsernameDto;
 import com.example.zzjp.clothesShop.model.User;
-import com.example.zzjp.clothesShop.model.UserDto;
+import com.example.zzjp.clothesShop.dto.UserDto;
 import com.example.zzjp.clothesShop.service.UserService;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;

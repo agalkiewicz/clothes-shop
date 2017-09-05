@@ -33,9 +33,6 @@ public class ClothesShopApplication implements CommandLineRunner {
 	@Autowired
 	private UserRepository userRepository;
 
-//	@Autowired
-//	private PasswordEncoder passwordEncoder;
-
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -57,7 +54,6 @@ public class ClothesShopApplication implements CommandLineRunner {
 		item1.setId(PropertiesValues.ITEM_ID_1);
 		item1.setCategory(category1);
 		item1.setName(PropertiesValues.ITEM_NAME_1);
-		item1.setAmount(PropertiesValues.AMOUNT_1);
 		item1.setPrice(PropertiesValues.PRICE_1);
 		item1.setSize(PropertiesValues.SIZE_1);
 		item1.setColor(PropertiesValues.COLOR_1);
@@ -66,7 +62,6 @@ public class ClothesShopApplication implements CommandLineRunner {
 		item2.setId(PropertiesValues.ITEM_ID_2);
 		item2.setCategory(category1);
 		item2.setName(PropertiesValues.ITEM_NAME_2);
-		item2.setAmount(PropertiesValues.AMOUNT_2);
 		item2.setPrice(PropertiesValues.PRICE_2);
 		item2.setSize(PropertiesValues.SIZE_1);
 		item2.setColor(PropertiesValues.COLOR_1);
@@ -75,7 +70,6 @@ public class ClothesShopApplication implements CommandLineRunner {
 		item3.setId(PropertiesValues.ITEM_ID_3);
 		item3.setCategory(category2);
 		item3.setName(PropertiesValues.ITEM_NAME_3);
-		item3.setAmount(PropertiesValues.AMOUNT_2);
 		item3.setPrice(PropertiesValues.PRICE_2);
 		item3.setSize(PropertiesValues.SIZE_2);
 		item3.setColor(PropertiesValues.COLOR_2);

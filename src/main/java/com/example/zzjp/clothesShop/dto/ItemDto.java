@@ -1,5 +1,6 @@
-package com.example.zzjp.clothesShop.model;
+package com.example.zzjp.clothesShop.dto;
 
+import com.example.zzjp.clothesShop.model.Size;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -17,10 +18,6 @@ public class ItemDto {
     private String color;
 
     private Size size;
-
-    @NotNull
-    @Min(0)
-    private int amount;
 
     @NotNull
     private BigDecimal price;
@@ -58,14 +55,6 @@ public class ItemDto {
 
     public void setSize(Size size) {
         this.size = size;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
     }
 
     public BigDecimal getPrice() {

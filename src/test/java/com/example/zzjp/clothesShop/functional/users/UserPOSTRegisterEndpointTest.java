@@ -2,12 +2,10 @@ package com.example.zzjp.clothesShop.functional.users;
 
 import com.example.zzjp.clothesShop.functional.Setup;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
-import com.example.zzjp.clothesShop.model.CategoryDto;
-import com.example.zzjp.clothesShop.model.UserDto;
+import com.example.zzjp.clothesShop.dto.UserDto;
 import com.example.zzjp.clothesShop.repository.CategoryRepository;
 import com.example.zzjp.clothesShop.repository.ItemRepository;
 import com.example.zzjp.clothesShop.repository.UserRepository;
-import com.example.zzjp.clothesShop.util.PropertiesValues;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -2,7 +2,7 @@ package com.example.zzjp.clothesShop.service;
 
 import com.example.zzjp.clothesShop.model.Category;
 import com.example.zzjp.clothesShop.model.Item;
-import com.example.zzjp.clothesShop.model.ItemDto;
+import com.example.zzjp.clothesShop.dto.ItemDto;
 import com.example.zzjp.clothesShop.model.Size;
 import com.example.zzjp.clothesShop.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,18 +67,6 @@ public class ItemService {
         return itemRepository.findBySize(size);
     }
 
-    public List<Item> getByAmount(int amount) {
-        return itemRepository.findByAmount(amount);
-    }
-
-    public List<Item> getByAmountGreaterThan(int amount) {
-        return itemRepository.findByAmountGreaterThan(amount);
-    }
-
-    public List<Item> getByAmountLessThan(int amount) {
-        return itemRepository.findByAmountLessThan(amount);
-    }
-
     public Item add(ItemDto itemDto) {
         Category category = categoryService.getById(itemDto.getCategoryId());
         Item item = new Item(itemDto);
@@ -92,7 +80,6 @@ public class ItemService {
         Category category = categoryService.getById(itemDto.getCategoryId());
 
         item.setName(itemDto.getName());
-        item.setAmount(itemDto.getAmount());
         item.setColor(itemDto.getColor());
         item.setPrice(itemDto.getPrice());
         item.setSize(itemDto.getSize());

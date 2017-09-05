@@ -94,7 +94,6 @@ public class ItemGETGetByIdEndpointTest {
 
         assertTrue(item.getId().equals(PropertiesValues.ITEM_ID_1));
         assertTrue(item.getName().equals(PropertiesValues.ITEM_NAME_1));
-        assertTrue(item.getAmount() == PropertiesValues.AMOUNT_1);
         assertTrue(item.getPrice().equals(PropertiesValues.PRICE_1));
         assertTrue(item.getColor().equals(PropertiesValues.COLOR_1));
         assertTrue(item.getSize().equals(PropertiesValues.SIZE_1));
