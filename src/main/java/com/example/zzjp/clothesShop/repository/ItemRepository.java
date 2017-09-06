@@ -26,10 +26,4 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findByColor(String color);
 
     List<Item> findBySize(Size size);
-
-    List<Item> findByAmount(int amount);
-
-    List<Item> findByAmountGreaterThan(int amount);
-
-    List<Item> findByAmountLessThan(int amount);
 }

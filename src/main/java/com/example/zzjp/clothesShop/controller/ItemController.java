@@ -1,5 +1,6 @@
 package com.example.zzjp.clothesShop.controller;
 
+import com.example.zzjp.clothesShop.dto.ItemDto;
 import com.example.zzjp.clothesShop.model.*;
 import com.example.zzjp.clothesShop.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -71,14 +71,14 @@ public class ItemController {
         }
     }
 
-    @DeleteMapping(value = "/{id}", produces = "application/json")
-    ResponseEntity remove(@PathVariable("id") Long id) {
-        try {
-            itemService.remove(id);
-
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @DeleteMapping(value = "/{id}", produces = "application/json")
+//    ResponseEntity remove(@PathVariable("id") Long id) {
+//        try {
+//            itemService.remove(id);
+//
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 }

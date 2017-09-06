@@ -1,13 +1,11 @@
 package com.example.zzjp.clothesShop.model;
 
+import com.example.zzjp.clothesShop.dto.CategoryDto;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Entity
 @Table(name = "categories")

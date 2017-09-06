@@ -1,8 +1,9 @@
 package com.example.zzjp.clothesShop.unit;
 
 import com.example.zzjp.clothesShop.model.Category;
-import com.example.zzjp.clothesShop.model.CategoryDto;
+import com.example.zzjp.clothesShop.dto.CategoryDto;
 import com.example.zzjp.clothesShop.repository.CategoryRepository;
+import com.example.zzjp.clothesShop.repository.ItemRepository;
 import com.example.zzjp.clothesShop.service.CategoryService;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,9 +25,12 @@ public class CategoryServiceUnitTest {
 
     CategoryService categoryService;
 
+    @Mock
+    ItemRepository itemRepository;
+
     @Before
     public void setUp() {
-        categoryService = new CategoryService(categoryRepository);
+        categoryService = new CategoryService(categoryRepository, itemRepository);
     }
 
     @Test

@@ -1,4 +1,4 @@
-package com.example.zzjp.clothesShop.model;
+package com.example.zzjp.clothesShop.dto;
 
 import org.hibernate.validator.constraints.NotBlank;
 

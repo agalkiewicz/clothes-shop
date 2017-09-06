@@ -1,12 +1,11 @@
 package com.example.zzjp.clothesShop.model;
 
+import com.example.zzjp.clothesShop.dto.ItemDto;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
@@ -30,21 +29,35 @@ public class Item {
     private Size size;
 
     @NotNull
-    @Min(0)
-    private int amount;
-
-    @NotNull
     private BigDecimal price;
+
+    //    @OneToOne(mappedBy = "item")
+    @OneToOne()
+    @JoinColumn(name = "item_state_id", referencedColumnName = "id")
+    private ItemState itemState;
+
+//    @OneToOne()
+//    @JoinColumn(name = "item_id", referencedColumnName = "id")
+//    private Item item;
 
     public Item() {
     }
 
     public Item(ItemDto itemDto) {
         this.name = itemDto.getName();
-        this.amount = itemDto.getAmount();
         this.color = itemDto.getColor();
         this.price = itemDto.getPrice();
         this.size = itemDto.getSize();
+    }
+
+    //    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "item_state_id", referencedColumnName = "id")
+    public ItemState getItemState() {
+        return itemState;
+    }
+
+    public void setItemState(ItemState itemState) {
+        this.itemState = itemState;
     }
 
     public Long getId() {
@@ -87,14 +100,6 @@ public class Item {
         this.size = size;
     }
 
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
     public BigDecimal getPrice() {
         return price;
     }
@@ -119,7 +124,6 @@ public class Item {
                 ", category=" + category +
                 ", color='" + color + '\'' +
                 ", size=" + size +
-                ", amount=" + amount +
                 ", price=" + price +
                 '}';
     }

@@ -2,10 +2,8 @@ package com.example.zzjp.clothesShop.functional.categories;
 
 import com.example.zzjp.clothesShop.functional.Setup;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
-import com.example.zzjp.clothesShop.repository.UserRepository;
+import com.example.zzjp.clothesShop.repository.*;
 import com.example.zzjp.clothesShop.util.PropertiesValues;
-import com.example.zzjp.clothesShop.repository.CategoryRepository;
-import com.example.zzjp.clothesShop.repository.ItemRepository;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,9 +46,31 @@ public class CategoryDELETERemoveEndpointTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private DeliveryRepository deliveryRepository;
+
+    @Autowired
+    private DiscountRepository discountRepository;
+
+    @Autowired
+    private ItemStateRepository itemStateRepository;
+
     @PostConstruct
     public void initializeDB() {
-        DatabaseInitializer databaseInitializer = new DatabaseInitializer(itemRepository, categoryRepository, userRepository, passwordEncoder);
+        DatabaseInitializer databaseInitializer = new DatabaseInitializer(
+                itemRepository,
+                categoryRepository,
+                userRepository,
+                passwordEncoder,
+                orderRepository,
+                deliveryRepository,
+                discountRepository,
+                itemStateRepository
+        );
+
         databaseInitializer.initializeDB();
     }
 
@@ -60,31 +80,17 @@ public class CategoryDELETERemoveEndpointTest {
     }
 
     @Test
-    public void shouldRemoveCategoryWithoutItemsAsAdmin() {
+    public void shouldRemoveCategoryAsAdmin() {
         given()
                 .port(port)
                 .auth()
                 .preemptive()
                 .basic(PropertiesValues.USERNAME_1, PropertiesValues.PASSSWORD_1)
-                .pathParam("id", PropertiesValues.CATEGORY_ID_3)
+                .pathParam("id", 1)
                 .when()
                 .delete("/{id}")
                 .then()
                 .statusCode(200);
-    }
-
-    @Test
-    public void shouldReturn500WhenCategoryHasItems() {
-        given()
-                .port(port)
-                .auth()
-                .preemptive()
-                .basic(PropertiesValues.USERNAME_1, PropertiesValues.PASSSWORD_1)
-                .pathParam("id", PropertiesValues.CATEGORY_ID_1)
-                .when()
-                .delete("/{id}")
-                .then()
-                .statusCode(500);
     }
 
     @Test

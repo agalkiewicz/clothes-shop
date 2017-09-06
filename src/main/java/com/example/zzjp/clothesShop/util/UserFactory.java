@@ -1,7 +1,7 @@
 package com.example.zzjp.clothesShop.util;
 
 import com.example.zzjp.clothesShop.model.User;
-import com.example.zzjp.clothesShop.model.UserDto;
+import com.example.zzjp.clothesShop.dto.UserDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
