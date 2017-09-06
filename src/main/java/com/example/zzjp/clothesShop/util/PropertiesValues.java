@@ -39,4 +39,11 @@ public class PropertiesValues {
     public static final Long USER_ID_1 = 1L;
     public static final Long USER_ID_2 = 2L;
     public static final Long USER_ID_3 = 3L;
+    public static final Long ORDER_ID_1 = 1L;
+    public static final String DELIVERY_NAME_1 = "INPOST";
+    public static final BigDecimal DELIVERY_PRICE_1 = new BigDecimal("12.99");
+    public static final int NUMBER_OF_ORDER_ITEMS = 2;
+    public static final Long DISCOUNT_ID_1 = 1L;
+    public static final Long DISCOUNT_ID_2 = 2L;
+    public static final Long DISCOUNT_ID_3 = 3L;
 }

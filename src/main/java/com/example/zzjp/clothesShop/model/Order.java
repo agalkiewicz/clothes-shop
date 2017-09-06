@@ -1,11 +1,15 @@
 package com.example.zzjp.clothesShop.model;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "orders")
 public class Order {
 
     @Id
@@ -26,17 +30,12 @@ public class Order {
 
     private BigDecimal value;
 
-    @ManyToMany()
-    @JoinTable(
-            name="orders_discounts",
-            joinColumns=@JoinColumn(name="order_id", referencedColumnName="id"),
-            inverseJoinColumns=@JoinColumn(name="discount_id", referencedColumnName="id"))
-    private List<Discount> discounts;
-
+    @ManyToOne()
+    @JoinColumn(name = "discount_id", referencedColumnName = "id")
+    private Discount discount;
 
     private boolean isPaidUp;
 
-    @NotNull
     private OrderStatus orderStatus;
 
     @ManyToOne(fetch=FetchType.EAGER)
@@ -47,9 +46,22 @@ public class Order {
         this.user = user;
         this.items = new ArrayList<>();
         this.value = new BigDecimal("0.00");
-        this.discounts = new ArrayList<>();
-        isPaidUp = false;
-        orderStatus = OrderStatus.RECEIVED;
+        this.isPaidUp = false;
+    }
+
+    public Order() {
+    }
+
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
+    public void removeItem(Long id) {
+        items.remove(id);
+    }
+
+    public void setDiscount(Discount discount) {
+        this.discount = discount;
     }
 
     public Long getId() {
@@ -84,12 +96,8 @@ public class Order {
         this.value = value;
     }
 
-    public List<Discount> getDiscounts() {
-        return discounts;
-    }
-
-    public void setDiscounts(List<Discount> discounts) {
-        this.discounts = discounts;
+    public Discount getDiscount() {
+        return discount;
     }
 
     public boolean isPaidUp() {
@@ -123,7 +131,7 @@ public class Order {
                 ", user=" + user +
                 ", items=" + items +
                 ", value=" + value +
-                ", discounts=" + discounts +
+                ", discount=" + discount +
                 ", isPaidUp=" + isPaidUp +
                 ", orderStatus=" + orderStatus +
                 ", delivery=" + delivery +

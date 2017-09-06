@@ -2,6 +2,7 @@ package com.example.zzjp.clothesShop.unit;
 
 import com.example.zzjp.clothesShop.dto.UserDto;
 import com.example.zzjp.clothesShop.model.*;
+import com.example.zzjp.clothesShop.repository.OrderRepository;
 import com.example.zzjp.clothesShop.repository.UserRepository;
 import com.example.zzjp.clothesShop.service.UserService;
 import com.example.zzjp.clothesShop.util.ObjectMock;
@@ -35,9 +36,12 @@ public class UserServiceUnitTest {
 
     UserService userService;
 
+    @Mock
+    OrderRepository orderRepository;
+
     @Before
     public void setUp() {
-        userService = new UserService(userRepository, passwordEncoder, userFactory);
+        userService = new UserService(userRepository, passwordEncoder, userFactory, orderRepository);
     }
 
     @Test

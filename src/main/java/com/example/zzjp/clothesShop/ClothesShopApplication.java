@@ -1,12 +1,8 @@
 package com.example.zzjp.clothesShop;
 
-import com.example.zzjp.clothesShop.model.User;
-import com.example.zzjp.clothesShop.repository.UserRepository;
+import com.example.zzjp.clothesShop.model.*;
+import com.example.zzjp.clothesShop.repository.*;
 import com.example.zzjp.clothesShop.util.PropertiesValues;
-import com.example.zzjp.clothesShop.model.Category;
-import com.example.zzjp.clothesShop.model.Item;
-import com.example.zzjp.clothesShop.repository.CategoryRepository;
-import com.example.zzjp.clothesShop.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 @SpringBootApplication
@@ -32,6 +29,18 @@ public class ClothesShopApplication implements CommandLineRunner {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private DeliveryRepository deliveryRepository;
+
+	@Autowired
+	private DiscountRepository discountRepository;
+
+	@Autowired
+	private OrderRepository orderRepository;
+
+	@Autowired
+	private ItemStateRepository itemStateRepository;
 
 	@Bean
 	PasswordEncoder passwordEncoder() {
@@ -74,6 +83,21 @@ public class ClothesShopApplication implements CommandLineRunner {
 		item3.setSize(PropertiesValues.SIZE_2);
 		item3.setColor(PropertiesValues.COLOR_2);
 
+		ItemState itemState1 = new ItemState();
+		itemState1.setAmount(1);
+
+		ItemState itemState2 = new ItemState();
+		itemState2.setAmount(2);
+
+		ItemState itemState3 = new ItemState();
+		itemState3.setAmount(0);
+
+		itemStateRepository.save(Arrays.asList(itemState1, itemState2, itemState3));
+
+		item1.setItemState(itemState1);
+		item2.setItemState(itemState2);
+		item3.setItemState(itemState3);
+
 		itemRepository.save(Arrays.asList(item1, item2, item3));
 
 		User user1 = new User();
@@ -98,5 +122,36 @@ public class ClothesShopApplication implements CommandLineRunner {
 		user3.addRole(PropertiesValues.ROLE_3);
 
 		userRepository.save(Arrays.asList(user1, user2, user3));
+
+		userRepository.save(Arrays.asList(user1, user2, user3));
+
+		Order order1 = new Order(user1);
+		order1.addItem(item1);
+		order1.addItem(item2);
+
+		Delivery delivery1 = new Delivery();
+		delivery1.setName(PropertiesValues.DELIVERY_NAME_1);
+		delivery1.setPrice(PropertiesValues.DELIVERY_PRICE_1);
+		deliveryRepository.save(delivery1);
+
+		Discount discount1 = new Discount();
+		discount1.setDiscountType(DiscountType.SALE);
+		discount1.setItem(item1);
+		discount1.setPercentage(new BigDecimal("0.4"));
+
+		Discount discount2 = new Discount();
+		discount2.setDiscountType(DiscountType.DELIVERY);
+
+		Discount discount3 = new Discount();
+		discount3.setSumOfMoney(new BigDecimal("100.00"));
+		discount3.setPercentage(new BigDecimal("0.2"));
+		discount3.setDiscountType(DiscountType.MONEY);
+
+		discountRepository.save(Arrays.asList(discount1, discount2, discount3));
+
+		order1.setDelivery(delivery1);
+		order1.setDiscount(discount1);
+		order1.setUser(user2);
+		orderRepository.save(order1);
 	}
 }

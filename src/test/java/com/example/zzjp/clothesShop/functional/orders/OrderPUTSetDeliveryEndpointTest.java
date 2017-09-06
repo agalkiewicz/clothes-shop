@@ -1,8 +1,7 @@
-package com.example.zzjp.clothesShop.functional.categories;
+package com.example.zzjp.clothesShop.functional.orders;
 
 import com.example.zzjp.clothesShop.functional.Setup;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
-import com.example.zzjp.clothesShop.dto.CategoryDto;
 import com.example.zzjp.clothesShop.repository.*;
 import com.example.zzjp.clothesShop.util.PropertiesValues;
 import org.junit.BeforeClass;
@@ -21,8 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.IsNull.notNullValue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -30,7 +27,7 @@ import static org.hamcrest.core.IsNull.notNullValue;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
 @Rollback
-public class CategoryPOSTAddEndpointTest {
+public class OrderPUTSetDeliveryEndpointTest {
 
     @LocalServerPort
     private int port;
@@ -77,55 +74,53 @@ public class CategoryPOSTAddEndpointTest {
 
     @BeforeClass
     public static void setup() {
-        Setup.setup("/api/v1/categories");
+        Setup.setup("/api/v1/orders");
     }
 
     @Test
-    public void shouldAddCategory() {
-        String name = "shoes";
+    public void shouldSetDelivery() {
         given()
                 .port(port)
                 .auth()
                 .preemptive()
                 .basic(PropertiesValues.USERNAME_1, PropertiesValues.PASSSWORD_1)
                 .contentType("application/json")
-                .body(new CategoryDto(name))
+                .pathParam("orderId", PropertiesValues.ORDER_ID_1)
+                .body(3)
                 .when()
-                .post("/")
+                .put("/{orderId}/delivery")
                 .then()
-                .body("id", notNullValue())
-                .body("name", equalTo(name))
                 .statusCode(200);
     }
 
     @Test
-    public void shouldReturn400WhenCategoryIncomplete() {
-        given()
-                .port(port)
-                .auth()
-                .preemptive()
-                .basic(PropertiesValues.USERNAME_1, PropertiesValues.PASSSWORD_1)
-                .contentType("application/json")
-                .body(new CategoryDto())
-                .when()
-                .post("/")
-                .then()
-                .statusCode(400);
-
-    }
-
-    @Test
-    public void shouldReturn403WhenNonAdminLoggedIn() {
-        String name = "shoes";
+    public void shouldSetDeliveryWhenOwnerLoggedIn() {
         given()
                 .port(port)
                 .auth()
                 .preemptive()
                 .basic(PropertiesValues.USERNAME_2, PropertiesValues.PASSSWORD_2)
                 .contentType("application/json")
-                .body(new CategoryDto(name))
+                .pathParam("orderId", PropertiesValues.ORDER_ID_1)
+                .body(3)
                 .when()
-                .post("/")
+                .put("/{orderId}/delivery")
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
+    public void shouldReturn403WhenNonOwnerNonAdminLoggedIn() {
+        given()
+                .port(port)
+                .auth()
+                .preemptive()
+                .basic(PropertiesValues.USERNAME_3, PropertiesValues.PASSSWORD_3)
+                .contentType("application/json")
+                .pathParam("orderId", PropertiesValues.ORDER_ID_1)
+                .body(3)
+                .when()
+                .put("/{orderId}/delivery")
                 .then()
                 .statusCode(403);
     }

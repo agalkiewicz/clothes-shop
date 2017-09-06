@@ -1,9 +1,9 @@
-package com.example.zzjp.clothesShop.functional.categories;
+package com.example.zzjp.clothesShop.functional.orders;
 
 import com.example.zzjp.clothesShop.functional.Setup;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
-import com.example.zzjp.clothesShop.dto.CategoryDto;
 import com.example.zzjp.clothesShop.repository.*;
+import com.example.zzjp.clothesShop.util.ObjectMock;
 import com.example.zzjp.clothesShop.util.PropertiesValues;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -11,6 +11,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
@@ -21,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
 
 @RunWith(SpringRunner.class)
@@ -30,7 +31,7 @@ import static org.hamcrest.core.IsNull.notNullValue;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
 @Rollback
-public class CategoryPOSTAddEndpointTest {
+public class OrderPOSTAddEndpointTest {
 
     @LocalServerPort
     private int port;
@@ -77,56 +78,32 @@ public class CategoryPOSTAddEndpointTest {
 
     @BeforeClass
     public static void setup() {
-        Setup.setup("/api/v1/categories");
+        Setup.setup("/api/v1/orders");
     }
 
     @Test
-    public void shouldAddCategory() {
-        String name = "shoes";
+    public void shouldAddItem() {
         given()
                 .port(port)
                 .auth()
                 .preemptive()
                 .basic(PropertiesValues.USERNAME_1, PropertiesValues.PASSSWORD_1)
                 .contentType("application/json")
-                .body(new CategoryDto(name))
                 .when()
                 .post("/")
                 .then()
                 .body("id", notNullValue())
-                .body("name", equalTo(name))
                 .statusCode(200);
     }
 
     @Test
-    public void shouldReturn400WhenCategoryIncomplete() {
+    public void asNonLoggedInShouldNotAddItem() {
         given()
                 .port(port)
-                .auth()
-                .preemptive()
-                .basic(PropertiesValues.USERNAME_1, PropertiesValues.PASSSWORD_1)
                 .contentType("application/json")
-                .body(new CategoryDto())
                 .when()
                 .post("/")
                 .then()
-                .statusCode(400);
-
-    }
-
-    @Test
-    public void shouldReturn403WhenNonAdminLoggedIn() {
-        String name = "shoes";
-        given()
-                .port(port)
-                .auth()
-                .preemptive()
-                .basic(PropertiesValues.USERNAME_2, PropertiesValues.PASSSWORD_2)
-                .contentType("application/json")
-                .body(new CategoryDto(name))
-                .when()
-                .post("/")
-                .then()
-                .statusCode(403);
+                .statusCode(401);
     }
 }

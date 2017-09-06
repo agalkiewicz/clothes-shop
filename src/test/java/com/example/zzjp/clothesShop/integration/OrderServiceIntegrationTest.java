@@ -1,11 +1,13 @@
 package com.example.zzjp.clothesShop.integration;
 
 import com.example.zzjp.clothesShop.ClothesShopApplication;
-import com.example.zzjp.clothesShop.repository.*;
-import com.example.zzjp.clothesShop.util.PropertiesValues;
+import com.example.zzjp.clothesShop.exceptions.NoItemException;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
-import com.example.zzjp.clothesShop.model.Category;
-import com.example.zzjp.clothesShop.service.CategoryService;
+import com.example.zzjp.clothesShop.model.Item;
+import com.example.zzjp.clothesShop.model.Order;
+import com.example.zzjp.clothesShop.repository.*;
+import com.example.zzjp.clothesShop.service.OrderService;
+import com.example.zzjp.clothesShop.util.PropertiesValues;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
 @Rollback
-public class CategoryServiceIntegrationTest {
+public class OrderServiceIntegrationTest {
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -34,7 +36,7 @@ public class CategoryServiceIntegrationTest {
     private ItemRepository itemRepository;
 
     @Autowired
-    private CategoryService categoryService;
+    private OrderService orderService;
 
     @Autowired
     private UserRepository userRepository;
@@ -71,10 +73,37 @@ public class CategoryServiceIntegrationTest {
     }
 
     @Test
-    public void shouldReturnCategoryByName() {
-        Category result = categoryService.getByName(PropertiesValues.CATEGORY_NAME_1);
+    public void shouldAddItem() throws NoItemException {
+        Item itemBefore = itemRepository.findOne(PropertiesValues.ITEM_ID_1);
+        int amountBefore = itemBefore.getItemState().getAmount();
 
-        assertThat(result.getName())
-                .isEqualTo(PropertiesValues.CATEGORY_NAME_1);
+        Order order = orderService.addItem(PropertiesValues.ORDER_ID_1, PropertiesValues.ITEM_ID_1);
+
+        Item itemAfter = itemRepository.findOne(PropertiesValues.ITEM_ID_1);
+        int amountAfter = itemAfter.getItemState().getAmount();
+
+        assertThat(order.getItems().size())
+                .isEqualTo(PropertiesValues.NUMBER_OF_ORDER_ITEMS + 1);
+        assertThat(amountBefore)
+                .isNotEqualTo(amountAfter);
+    }
+
+    @Test(expected = NoItemException.class)
+    public void shouldThrowNoItemExceptionWhenAmountEquals0() throws NoItemException {
+        Order order = orderService.addItem(PropertiesValues.ORDER_ID_1, PropertiesValues.ITEM_ID_3);
+    }
+
+    @Test
+    public void shouldRemoveItem() {
+        Item itemBefore = itemRepository.findOne(PropertiesValues.ITEM_ID_1);
+        int amountBefore = itemBefore.getItemState().getAmount();
+
+        Order result = orderService.removeItem(PropertiesValues.ORDER_ID_1, PropertiesValues.ITEM_ID_1);
+
+        Item itemAfter = itemRepository.findOne(PropertiesValues.ITEM_ID_1);
+        int amountAfter = itemAfter.getItemState().getAmount();
+
+        assertThat(amountBefore)
+                .isNotEqualTo(amountAfter);
     }
 }

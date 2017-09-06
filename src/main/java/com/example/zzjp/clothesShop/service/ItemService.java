@@ -1,15 +1,17 @@
 package com.example.zzjp.clothesShop.service;
 
-import com.example.zzjp.clothesShop.model.Category;
-import com.example.zzjp.clothesShop.model.Item;
+import com.example.zzjp.clothesShop.model.*;
 import com.example.zzjp.clothesShop.dto.ItemDto;
-import com.example.zzjp.clothesShop.model.Size;
+import com.example.zzjp.clothesShop.repository.DiscountRepository;
 import com.example.zzjp.clothesShop.repository.ItemRepository;
+import com.example.zzjp.clothesShop.repository.ItemStateRepository;
+import com.example.zzjp.clothesShop.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,11 +22,23 @@ public class ItemService {
 
     private final CategoryService categoryService;
 
+    private final ItemStateRepository itemStateRepository;
+
+    private final DiscountRepository discountRepository;
+
+    private final OrderRepository orderRepository;
+
     @Autowired
     public ItemService(final ItemRepository itemRepository,
-                       final CategoryService categoryService) {
+                       final CategoryService categoryService,
+                       final ItemStateRepository itemStateRepository,
+                       final DiscountRepository discountRepository,
+                       final OrderRepository orderRepository) {
         this.itemRepository = itemRepository;
         this.categoryService = categoryService;
+        this.itemStateRepository = itemStateRepository;
+        this.discountRepository = discountRepository;
+        this.orderRepository = orderRepository;
     }
 
     public List<Item> getAll() {
@@ -85,10 +99,30 @@ public class ItemService {
         item.setSize(itemDto.getSize());
         item.setCategory(category);
 
-        return itemRepository.save(item);
+        return itemRepository.saveAndFlush(item);
     }
 
     public void remove(Long id) {
-        itemRepository.delete(id);
+//        ItemState itemState = itemStateRepository.findByItemId(id);
+//        itemStateRepository.delete(itemState);
+//        List<Discount> discounts = discountRepository.findByItemId(id);
+//        ArrayList<Order> orders = new ArrayList<>();
+//        for (Discount discount : discounts) {
+//            List<Order> ordersLocal = orderRepository.findByDiscount(discount);
+//            orders.addAll(ordersLocal);
+//        }
+//        for (Order order : orders) {
+//            order.setDiscount(null);
+//        }
+//        discountRepository.delete(discounts);
+//
+//        Item item = itemRepository.findOne(id);
+//        itemRepository.delete(id);
+//        List<Order> itemOrders = orderRepository.findByItemsIn(item);
+//        for (Order itemOrder : itemOrders) {
+//            itemOrder.removeItem(id);
+//            orderRepository.saveAndFlush(itemOrder);
+//        }
+//
     }
 }

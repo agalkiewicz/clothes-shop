@@ -6,7 +6,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
@@ -32,7 +31,14 @@ public class Item {
     @NotNull
     private BigDecimal price;
 
+    //    @OneToOne(mappedBy = "item")
+    @OneToOne()
+    @JoinColumn(name = "item_state_id", referencedColumnName = "id")
     private ItemState itemState;
+
+//    @OneToOne()
+//    @JoinColumn(name = "item_id", referencedColumnName = "id")
+//    private Item item;
 
     public Item() {
     }
@@ -44,8 +50,8 @@ public class Item {
         this.size = itemDto.getSize();
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "item_state_id", referencedColumnName = "id")
+    //    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "item_state_id", referencedColumnName = "id")
     public ItemState getItemState() {
         return itemState;
     }

@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
@@ -39,6 +40,12 @@ public class User implements UserDetails {
 
     public User() {
         this.roles = new HashSet<>();
+    }
+
+    public User(String username, String password) {
+        this.roles = new HashSet<>();
+        this.username = username;
+        this.password = password;
     }
 
     public Long getId() {

@@ -1,6 +1,8 @@
 package com.example.zzjp.clothesShop.util;
 
 import com.example.zzjp.clothesShop.dto.ItemDto;
+import com.example.zzjp.clothesShop.model.Delivery;
+import com.example.zzjp.clothesShop.model.Item;
 import com.example.zzjp.clothesShop.model.Role;
 import com.example.zzjp.clothesShop.model.User;
 import com.example.zzjp.clothesShop.dto.UserDto;
@@ -16,6 +18,8 @@ public class ObjectMock {
     public static final String PASSWORD = "bardzotrudnehaslo";
     public static final long ID = 1L;
     public static final Role ROLE = Role.USER;
+    public static final String DELIVERY_NAME = "INPOST";
+    public static final BigDecimal DELIVERY_PRICE = new BigDecimal("12.99");
 
     public static ItemDto mockItemDto() {
         ItemDto itemDto = new ItemDto();
@@ -42,5 +46,14 @@ public class ObjectMock {
         user.addRole(ROLE);
 
         return user;
+    }
+
+    public static Delivery mockDelivery() {
+        Delivery delivery = new Delivery();
+        delivery.setId(ID);
+        delivery.setName(DELIVERY_NAME);
+        delivery.setPrice(DELIVERY_PRICE);
+
+        return delivery;
     }
 }

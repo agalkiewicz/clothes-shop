@@ -1,8 +1,9 @@
-package com.example.zzjp.clothesShop.functional.categories;
+package com.example.zzjp.clothesShop.functional.orders;
 
+import com.example.zzjp.clothesShop.dto.AddDiscountDto;
 import com.example.zzjp.clothesShop.functional.Setup;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
-import com.example.zzjp.clothesShop.dto.CategoryDto;
+import com.example.zzjp.clothesShop.model.Order;
 import com.example.zzjp.clothesShop.repository.*;
 import com.example.zzjp.clothesShop.util.PropertiesValues;
 import org.junit.BeforeClass;
@@ -21,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
 
 @RunWith(SpringRunner.class)
@@ -30,7 +30,7 @@ import static org.hamcrest.core.IsNull.notNullValue;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
 @Rollback
-public class CategoryPOSTAddEndpointTest {
+public class OrderPOSTAddItemEndpointTest {
 
     @LocalServerPort
     private int port;
@@ -77,56 +77,83 @@ public class CategoryPOSTAddEndpointTest {
 
     @BeforeClass
     public static void setup() {
-        Setup.setup("/api/v1/categories");
+        Setup.setup("/api/v1/orders");
     }
 
     @Test
-    public void shouldAddCategory() {
-        String name = "shoes";
+    public void shouldAddItem() {
+        given()
+                .port(port).log().all()
+                .auth()
+                .preemptive()
+                .basic(PropertiesValues.USERNAME_1, PropertiesValues.PASSSWORD_1)
+                .contentType("application/json")
+                .pathParam("orderId", 1)
+                .body(1)
+                .when().log().all()
+                .post("/{orderId}/items")
+                .then()
+                .statusCode(200).log().all();
+    }
+
+    @Test
+    public void shouldReturn404WhenAmountEquals0() {
         given()
                 .port(port)
                 .auth()
                 .preemptive()
                 .basic(PropertiesValues.USERNAME_1, PropertiesValues.PASSSWORD_1)
                 .contentType("application/json")
-                .body(new CategoryDto(name))
+                .pathParam("id", 1)
+                .body(PropertiesValues.ITEM_ID_3)
                 .when()
-                .post("/")
+                .post("/{id}/items")
                 .then()
-                .body("id", notNullValue())
-                .body("name", equalTo(name))
-                .statusCode(200);
+                .statusCode(404);
     }
 
     @Test
-    public void shouldReturn400WhenCategoryIncomplete() {
+    public void asNonLoggedInShouldNotAddItem() {
         given()
                 .port(port)
-                .auth()
-                .preemptive()
-                .basic(PropertiesValues.USERNAME_1, PropertiesValues.PASSSWORD_1)
                 .contentType("application/json")
-                .body(new CategoryDto())
+                .pathParam("id", 1)
+                .body(PropertiesValues.ITEM_ID_1)
                 .when()
-                .post("/")
+                .post("/{id}/items")
                 .then()
-                .statusCode(400);
-
+                .statusCode(401);
     }
 
     @Test
-    public void shouldReturn403WhenNonAdminLoggedIn() {
-        String name = "shoes";
+    public void shouldAddItemWhenOwnerLoggedIn() {
         given()
                 .port(port)
                 .auth()
                 .preemptive()
                 .basic(PropertiesValues.USERNAME_2, PropertiesValues.PASSSWORD_2)
                 .contentType("application/json")
-                .body(new CategoryDto(name))
+                .pathParam("orderId", PropertiesValues.ORDER_ID_1)
+                .body(new AddDiscountDto(PropertiesValues.DISCOUNT_ID_1))
                 .when()
-                .post("/")
+                .post("/{orderId}/discounts/")
                 .then()
-                .statusCode(403);
+                .statusCode(200);
+    }
+
+    @Test
+    public void shouldReturn403WhenNonOwnerLoggedIn() {
+        given()
+                .port(port).log().all()
+                .auth()
+                .preemptive()
+                .basic(PropertiesValues.USERNAME_3, PropertiesValues.PASSSWORD_3)
+                .contentType("application/json")
+                .pathParam("orderId", 1)
+                .body(1)
+                .when().log().all()
+                .post("/{orderId}/items")
+                .then()
+                .statusCode(403).log().all();
     }
 }

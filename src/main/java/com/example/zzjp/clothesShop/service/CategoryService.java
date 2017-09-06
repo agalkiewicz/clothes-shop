@@ -2,7 +2,9 @@ package com.example.zzjp.clothesShop.service;
 
 import com.example.zzjp.clothesShop.model.Category;
 import com.example.zzjp.clothesShop.dto.CategoryDto;
+import com.example.zzjp.clothesShop.model.Item;
 import com.example.zzjp.clothesShop.repository.CategoryRepository;
+import com.example.zzjp.clothesShop.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +17,12 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    private final ItemRepository itemRepository;
+
     @Autowired
-    public CategoryService(final CategoryRepository categoryRepository) {
+    public CategoryService(final CategoryRepository categoryRepository, ItemRepository itemRepository) {
         this.categoryRepository = categoryRepository;
+        this.itemRepository = itemRepository;
     }
 
     public List<Category> getAll() {
@@ -44,6 +49,10 @@ public class CategoryService {
     }
 
     public void remove(Long id) {
+        List<Item> items = itemRepository.findByCategoryId(id);
+        for (Item item : items) {
+            item.setCategory(null);
+        }
         categoryRepository.delete(id);
     }
 }

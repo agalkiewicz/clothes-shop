@@ -71,14 +71,14 @@ public class ItemController {
         }
     }
 
-    @DeleteMapping(value = "/{id}", produces = "application/json")
-    ResponseEntity remove(@PathVariable("id") Long id) {
-        try {
-            itemService.remove(id);
-
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @DeleteMapping(value = "/{id}", produces = "application/json")
+//    ResponseEntity remove(@PathVariable("id") Long id) {
+//        try {
+//            itemService.remove(id);
+//
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 }

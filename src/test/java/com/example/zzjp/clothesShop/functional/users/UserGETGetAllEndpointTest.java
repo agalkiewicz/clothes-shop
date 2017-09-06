@@ -3,10 +3,8 @@ package com.example.zzjp.clothesShop.functional.users;
 import com.example.zzjp.clothesShop.functional.Setup;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
 import com.example.zzjp.clothesShop.model.User;
-import com.example.zzjp.clothesShop.repository.UserRepository;
+import com.example.zzjp.clothesShop.repository.*;
 import com.example.zzjp.clothesShop.util.PropertiesValues;
-import com.example.zzjp.clothesShop.repository.CategoryRepository;
-import com.example.zzjp.clothesShop.repository.ItemRepository;
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
 import org.junit.BeforeClass;
@@ -52,9 +50,31 @@ public class UserGETGetAllEndpointTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private DeliveryRepository deliveryRepository;
+
+    @Autowired
+    private DiscountRepository discountRepository;
+
+    @Autowired
+    private ItemStateRepository itemStateRepository;
+
     @PostConstruct
     public void initializeDB() {
-        DatabaseInitializer databaseInitializer = new DatabaseInitializer(itemRepository, categoryRepository, userRepository, passwordEncoder);
+        DatabaseInitializer databaseInitializer = new DatabaseInitializer(
+                itemRepository,
+                categoryRepository,
+                userRepository,
+                passwordEncoder,
+                orderRepository,
+                deliveryRepository,
+                discountRepository,
+                itemStateRepository
+        );
+
         databaseInitializer.initializeDB();
     }
 
