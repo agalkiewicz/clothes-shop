@@ -1,9 +1,9 @@
 package com.example.zzjp.clothesShop.unit;
 
+import com.example.zzjp.clothesShop.dto.FilterDto;
 import com.example.zzjp.clothesShop.repository.DiscountRepository;
 import com.example.zzjp.clothesShop.repository.ItemStateRepository;
 import com.example.zzjp.clothesShop.repository.OrderRepository;
-import com.example.zzjp.clothesShop.service.OrderService;
 import com.example.zzjp.clothesShop.util.PropertiesValues;
 import com.example.zzjp.clothesShop.model.Category;
 import com.example.zzjp.clothesShop.model.Item;
@@ -345,4 +345,203 @@ public class ItemServiceUnitTest {
 //        verify(itemRepository)
 //                .delete(id);
 //    }
+
+    @Test
+    public void shouldFindItemByCategory() {
+        FilterDto filterDto = new FilterDto();
+        filterDto.setCategoryId(PropertiesValues.CATEGORY_ID_1);
+        filterDto.setPriceMin(new BigDecimal("0.00"));
+        filterDto.setPriceMax(new BigDecimal("" + Double.MAX_VALUE + ""));
+
+        doReturn(Arrays.asList(item1, item2))
+                .when(itemRepository)
+                .findByCategoryIdAndPriceBetween(filterDto.getCategoryId(), filterDto.getPriceMin(), filterDto.getPriceMax());
+
+        List<Item> result = itemService.filter(filterDto);
+
+        verify(itemRepository)
+                .findByCategoryIdAndPriceBetween(filterDto.getCategoryId(), filterDto.getPriceMin(), filterDto.getPriceMax());
+
+        assertThat(result.size())
+                .isEqualTo(2);
+        assertThat(result.get(0).getCategory().getId())
+                .isEqualTo(PropertiesValues.CATEGORY_ID_1);
+        assertThat(result.get(1).getCategory().getId())
+                .isEqualTo(PropertiesValues.CATEGORY_ID_1);
+    }
+
+    @Test
+    public void shouldFindItemByColor() {
+        FilterDto filterDto = new FilterDto();
+        filterDto.setColor(PropertiesValues.COLOR_1);
+        filterDto.setPriceMin(new BigDecimal("0.00"));
+        filterDto.setPriceMax(new BigDecimal("" + Double.MAX_VALUE + ""));
+
+        doReturn(Arrays.asList(item1, item2))
+                .when(itemRepository)
+                .findByColorAndPriceBetween(filterDto.getColor(), filterDto.getPriceMin(), filterDto.getPriceMax());
+
+        List<Item> result = itemService.filter(filterDto);
+
+        verify(itemRepository)
+                .findByColorAndPriceBetween(filterDto.getColor(), filterDto.getPriceMin(), filterDto.getPriceMax());
+
+        assertThat(result.size())
+                .isEqualTo(2);
+        assertThat(result.get(0).getColor())
+                .isEqualTo(PropertiesValues.COLOR_1);
+        assertThat(result.get(1).getColor())
+                .isEqualTo(PropertiesValues.COLOR_1);
+    }
+
+    @Test
+    public void shouldFindItemBySize() {
+        FilterDto filterDto = new FilterDto();
+        filterDto.setSize(PropertiesValues.SIZE_1);
+        filterDto.setPriceMin(new BigDecimal("0.00"));
+        filterDto.setPriceMax(new BigDecimal("" + Double.MAX_VALUE + ""));
+
+        doReturn(Arrays.asList(item1, item2))
+                .when(itemRepository)
+                .findBySizeAndPriceBetween(filterDto.getSize(), filterDto.getPriceMin(), filterDto.getPriceMax());
+
+        List<Item> result = itemService.filter(filterDto);
+
+        verify(itemRepository)
+                .findBySizeAndPriceBetween(filterDto.getSize(), filterDto.getPriceMin(), filterDto.getPriceMax());
+
+        assertThat(result.size())
+                .isEqualTo(2);
+        assertThat(result.get(0).getSize())
+                .isEqualTo(PropertiesValues.SIZE_1);
+        assertThat(result.get(1).getSize())
+                .isEqualTo(PropertiesValues.SIZE_1);
+    }
+
+    @Test
+    public void shouldFindItemByPrice() {
+        FilterDto filterDto = new FilterDto();
+        filterDto.setPriceMin(PropertiesValues.PRICE_1.subtract(new BigDecimal("10.00")));
+        filterDto.setPriceMax(PropertiesValues.PRICE_1.add(new BigDecimal("10.00")));
+
+        doReturn(Arrays.asList(item1))
+                .when(itemRepository)
+                .findByPriceBetween(filterDto.getPriceMin(), filterDto.getPriceMax());
+
+        List<Item> result = itemService.filter(filterDto);
+
+        verify(itemRepository)
+                .findByPriceBetween(filterDto.getPriceMin(), filterDto.getPriceMax());
+
+        assertThat(result.size())
+                .isEqualTo(1);
+        assertThat(result.get(0))
+                .isEqualTo(item1);
+    }
+
+    @Test
+    public void shouldFindItemByCategoryAndColor() {
+        FilterDto filterDto = new FilterDto();
+        filterDto.setCategoryId(PropertiesValues.CATEGORY_ID_1);
+        filterDto.setColor(PropertiesValues.COLOR_1);
+        filterDto.setPriceMin(new BigDecimal("0.00"));
+        filterDto.setPriceMax(new BigDecimal("" + Double.MAX_VALUE + ""));
+
+        doReturn(Arrays.asList(item1, item2))
+                .when(itemRepository)
+                .findByCategoryIdAndColorAndPriceBetween(
+                        filterDto.getCategoryId(),
+                        filterDto.getColor(),
+                        filterDto.getPriceMin(),
+                        filterDto.getPriceMax()
+                );
+
+        List<Item> result = itemService.filter(filterDto);
+
+        verify(itemRepository)
+                .findByCategoryIdAndColorAndPriceBetween(
+                        filterDto.getCategoryId(),
+                        filterDto.getColor(),
+                        filterDto.getPriceMin(),
+                        filterDto.getPriceMax()
+                );
+
+        assertThat(result.size())
+                .isEqualTo(2);
+        assertThat(result.get(0))
+                .isEqualTo(item1);
+        assertThat(result.get(1))
+                .isEqualTo(item2);
+    }
+
+    @Test
+    public void shouldFindItemByCategoryAndSize() {
+        FilterDto filterDto = new FilterDto();
+        filterDto.setCategoryId(PropertiesValues.CATEGORY_ID_1);
+        filterDto.setSize(PropertiesValues.SIZE_1);
+        filterDto.setPriceMin(new BigDecimal("0.00"));
+        filterDto.setPriceMax(new BigDecimal("" + Double.MAX_VALUE + ""));
+
+        doReturn(Arrays.asList(item1, item2))
+                .when(itemRepository)
+                .findByCategoryIdAndSizeAndPriceBetween(
+                        filterDto.getCategoryId(),
+                        filterDto.getSize(),
+                        filterDto.getPriceMin(),
+                        filterDto.getPriceMax()
+                );
+
+        List<Item> result = itemService.filter(filterDto);
+
+        verify(itemRepository)
+                .findByCategoryIdAndSizeAndPriceBetween(
+                        filterDto.getCategoryId(),
+                        filterDto.getSize(),
+                        filterDto.getPriceMin(),
+                        filterDto.getPriceMax()
+                );
+
+        assertThat(result.size())
+                .isEqualTo(2);
+        assertThat(result.get(0))
+                .isEqualTo(item1);
+        assertThat(result.get(1))
+                .isEqualTo(item2);
+    }
+
+    @Test
+    public void shouldFindItemByCategoryAndColorAndSizeAndPrice() {
+        FilterDto filterDto = new FilterDto();
+        filterDto.setCategoryId(PropertiesValues.CATEGORY_ID_1);
+        filterDto.setColor(PropertiesValues.COLOR_1);
+        filterDto.setSize(PropertiesValues.SIZE_1);
+        filterDto.setPriceMin(PropertiesValues.PRICE_1.subtract(new BigDecimal("10.00")));
+        filterDto.setPriceMax(PropertiesValues.PRICE_1.add(new BigDecimal("10.00")));
+
+        doReturn(Arrays.asList(item1))
+                .when(itemRepository)
+                .findByCategoryIdAndColorAndSizeAndPriceBetween(
+                        filterDto.getCategoryId(),
+                        filterDto.getColor(),
+                        filterDto.getSize(),
+                        filterDto.getPriceMin(),
+                        filterDto.getPriceMax()
+                );
+
+        List<Item> result = itemService.filter(filterDto);
+
+        verify(itemRepository)
+                .findByCategoryIdAndColorAndSizeAndPriceBetween(
+                        filterDto.getCategoryId(),
+                        filterDto.getColor(),
+                        filterDto.getSize(),
+                        filterDto.getPriceMin(),
+                        filterDto.getPriceMax()
+                );
+
+        assertThat(result.size())
+                .isEqualTo(1);
+        assertThat(result.get(0))
+                .isEqualTo(item1);
+    }
 }

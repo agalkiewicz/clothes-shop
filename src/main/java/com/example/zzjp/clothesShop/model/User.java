@@ -1,6 +1,8 @@
 package com.example.zzjp.clothesShop.model;
 
 import com.example.zzjp.clothesShop.dto.UserDto;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -123,5 +125,13 @@ public class User implements UserDetails {
             //TODO throw exception
         }
         this.roles.remove(role);
+    }
+
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 }

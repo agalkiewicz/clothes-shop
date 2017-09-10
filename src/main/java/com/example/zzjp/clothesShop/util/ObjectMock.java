@@ -56,4 +56,12 @@ public class ObjectMock {
 
         return delivery;
     }
+
+    public static Item mockItem() {
+        ItemDto itemDto = mockItemDto();
+        Item item = new Item(itemDto);
+        item.setId(ID);
+
+        return item;
+    }
 }
