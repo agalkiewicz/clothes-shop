@@ -24,6 +24,10 @@
 		<java.version>1.8</java.version>
 		<apache.commons.version>3.0.1</apache.commons.version>
 		<io.rest-assured-version>3.0.3</io.rest-assured-version>
+		<coveralls-maven-plugin-version>4.3.0</coveralls-maven-plugin-version>
+		<jacoco-maven-plugin-version>0.7.6.201602180812</jacoco-maven-plugin-version>
+		<lombok-version>1.16.16</lombok-version>
+		<spring-security-test-version>4.2.2.RELEASE</spring-security-test-version>
 	</properties>
 
 	<dependencies>
@@ -48,6 +52,13 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<!--lombok-->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok-version}</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
@@ -62,7 +73,7 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
-			<version>4.2.2.RELEASE</version>
+			<version>${spring-security-test-version}</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
@@ -73,58 +84,25 @@
 		</dependency>
 	</dependencies>
 
-	<!--<build>-->
-	<!--<plugins>-->
-	<!--<plugin>-->
-	<!--<groupId>org.springframework.boot</groupId>-->
-	<!--<artifactId>spring-boot-maven-plugin</artifactId>-->
-	<!--</plugin>-->
-	<!--&lt;!&ndash;<plugin>&ndash;&gt;-->
-	<!--&lt;!&ndash;<groupId>org.apache.maven.plugins</groupId>&ndash;&gt;-->
-	<!--&lt;!&ndash;<artifactId>maven-surefire-plugin</artifactId>&ndash;&gt;-->
-	<!--&lt;!&ndash;<version>2.18.1</version>&ndash;&gt;-->
-	<!--&lt;!&ndash;</plugin>&ndash;&gt;-->
-	<!--<plugin>-->
-	<!--<groupId>org.codehaus.mojo</groupId>-->
-	<!--<artifactId>build-helper-maven-plugin</artifactId>-->
-	<!--<version>1.10</version>-->
-	<!--<executions>-->
-	<!--<execution>-->
-	<!--<id>add-test-source</id>-->
-	<!--<phase>generate-test-sources</phase>-->
-	<!--<goals>-->
-	<!--<goal>add-test-source</goal>-->
-	<!--</goals>-->
-	<!--<configuration>-->
-	<!--<sources>-->
-	<!--<source>src/integration-test/java</source>-->
-	<!--<source>src/test/java</source>-->
-	<!--</sources>-->
-	<!--</configuration>-->
-	<!--</execution>-->
-	<!--</executions>-->
-	<!--</plugin>-->
-	<!--</plugins>-->
-	<!--</build>-->
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<forkCount>3</forkCount>
+					<reuseForks>true</reuseForks>
+					<argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<!--<plugin>-->
-				<!--<groupId>org.apache.maven.plugins</groupId>-->
-				<!--<artifactId>maven-surefire-plugin</artifactId>-->
-				<!--<configuration>-->
-					<!--<forkCount>3</forkCount>-->
-					<!--<reuseForks>true</reuseForks>-->
-					<!--<argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>-->
-				<!--</configuration>-->
-			<!--</plugin>-->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.7.6.201602180812</version>
+				<version>${jacoco-maven-plugin-version}</version>
 				<executions>
 					<execution>
 						<id>prepare-agent</id>
@@ -137,7 +115,7 @@
 			<plugin>
 				<groupId>org.eluder.coveralls</groupId>
 				<artifactId>coveralls-maven-plugin</artifactId>
-				<version>4.3.0</version>
+				<version>${coveralls-maven-plugin-version}</version>
 			</plugin>
 		</plugins>
 	</build>

@@ -1,5 +1,6 @@
 package com.example.zzjp.clothesShop.controller;
 
+import com.example.zzjp.clothesShop.aop.Monitored;
 import com.example.zzjp.clothesShop.model.Category;
 import com.example.zzjp.clothesShop.dto.CategoryDto;
 import com.example.zzjp.clothesShop.model.Item;
@@ -28,6 +29,7 @@ public class CategoryController {
         this.itemService = itemService;
     }
 
+    @Monitored
     @GetMapping(value = "/{id}", produces = "application/json")
     ResponseEntity<Category> getById(@PathVariable("id") Long id) {
         try {
@@ -43,6 +45,7 @@ public class CategoryController {
         }
     }
 
+    @Monitored
     @GetMapping(produces = "application/json")
     ResponseEntity<List<Category>> getAll() {
         try {
