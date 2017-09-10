@@ -16,7 +16,7 @@ import org.springframework.util.StopWatch;
 @Slf4j
 @Component
 public class TracingAspect {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Before("com.example.zzjp.clothesShop.aop.ClothesShopPointcuts.asyncControllerMethod()")
     public void tracingController(final JoinPoint joinPoint) {
