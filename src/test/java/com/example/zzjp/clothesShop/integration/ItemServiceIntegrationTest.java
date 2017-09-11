@@ -1,6 +1,7 @@
 package com.example.zzjp.clothesShop.integration;
 
 import com.example.zzjp.clothesShop.ClothesShopApplication;
+import com.example.zzjp.clothesShop.dto.FilterDto;
 import com.example.zzjp.clothesShop.repository.*;
 import com.example.zzjp.clothesShop.util.PropertiesValues;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
@@ -257,5 +258,79 @@ public class ItemServiceIntegrationTest {
                 .isEqualTo(PropertiesValues.SIZE_1);
         assertThat(result.get(1).getSize())
                 .isEqualTo(PropertiesValues.SIZE_1);
+    }
+
+    @Test
+    public void shouldFilterItemsByCategory() {
+        FilterDto filterDto = new FilterDto();
+        filterDto.setCategoryId(PropertiesValues.CATEGORY_ID_1);
+        filterDto.setPriceMin(new BigDecimal("0.00"));
+        filterDto.setPriceMax(new BigDecimal("" + Double.MAX_VALUE + ""));
+
+        List<Item> result = itemService.filter(filterDto);
+
+        assertThat(result.size())
+                .isEqualTo(2);
+        assertThat(result.get(0).getCategory().getId())
+                .isEqualTo(PropertiesValues.CATEGORY_ID_1);
+        assertThat(result.get(1).getCategory().getId())
+                .isEqualTo(PropertiesValues.CATEGORY_ID_1);
+    }
+
+    @Test
+    public void shouldFilterItemsBySize() {
+        FilterDto filterDto = new FilterDto();
+        filterDto.setSize(PropertiesValues.SIZE_1);
+        filterDto.setPriceMin(new BigDecimal("0.00"));
+        filterDto.setPriceMax(new BigDecimal("" + Double.MAX_VALUE + ""));
+
+        List<Item> result = itemService.filter(filterDto);
+
+        assertThat(result.size())
+                .isEqualTo(2);
+        assertThat(result.get(0).getSize())
+                .isEqualTo(PropertiesValues.SIZE_1);
+        assertThat(result.get(1).getSize())
+                .isEqualTo(PropertiesValues.SIZE_1);
+    }
+
+    @Test
+    public void shouldFilterItemsByColor() {
+        FilterDto filterDto = new FilterDto();
+        filterDto.setColor(PropertiesValues.COLOR_1);
+        filterDto.setPriceMin(new BigDecimal("0.00"));
+        filterDto.setPriceMax(new BigDecimal("" + Double.MAX_VALUE + ""));
+
+        List<Item> result = itemService.filter(filterDto);
+
+        assertThat(result.size())
+                .isEqualTo(2);
+        assertThat(result.get(0).getColor())
+                .isEqualTo(PropertiesValues.COLOR_1);
+        assertThat(result.get(1).getColor())
+                .isEqualTo(PropertiesValues.COLOR_1);
+    }
+
+    @Test
+    public void shouldFilterItemsByCategoryAndColorAndSizeAndPrice() {
+        FilterDto filterDto = new FilterDto();
+        filterDto.setCategoryId(PropertiesValues.CATEGORY_ID_1);
+        filterDto.setColor(PropertiesValues.COLOR_1);
+        filterDto.setSize(PropertiesValues.SIZE_1);
+        filterDto.setPriceMin(PropertiesValues.PRICE_2.subtract(new BigDecimal("10.00")));
+        filterDto.setPriceMax(PropertiesValues.PRICE_2.add(new BigDecimal("10.00")));
+
+        List<Item> result = itemService.filter(filterDto);
+
+        assertThat(result.size())
+                .isEqualTo(1);
+        assertThat(result.get(0).getCategory().getId())
+                .isEqualTo(PropertiesValues.CATEGORY_ID_1);
+        assertThat(result.get(0).getColor())
+                .isEqualTo(PropertiesValues.COLOR_1);
+        assertThat(result.get(0).getSize())
+                .isEqualTo(PropertiesValues.SIZE_1);
+        assertThat(result.get(0).getPrice())
+                .isEqualTo(PropertiesValues.PRICE_2);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.zzjp.clothesShop.service;
 
+import com.example.zzjp.clothesShop.dto.FilterDto;
 import com.example.zzjp.clothesShop.model.*;
 import com.example.zzjp.clothesShop.dto.ItemDto;
 import com.example.zzjp.clothesShop.repository.DiscountRepository;
@@ -124,5 +125,73 @@ public class ItemService {
 //            orderRepository.saveAndFlush(itemOrder);
 //        }
 //
+    }
+
+    public List<Item> filter(FilterDto filterDto) {
+        Long categoryId = filterDto.getCategoryId();
+        String color = filterDto.getColor();
+        Size size = filterDto.getSize();
+        BigDecimal minPrice = filterDto.getPriceMin();
+        BigDecimal maxPrice = filterDto.getPriceMax();
+
+        if (categoryId != null) {
+            if (color != null) {
+                if (size != null) {
+                    return itemRepository.findByCategoryIdAndColorAndSizeAndPriceBetween(
+                            categoryId,
+                            color,
+                            size,
+                            minPrice,
+                            maxPrice
+                    );
+                } else {
+                    return itemRepository.findByCategoryIdAndColorAndPriceBetween(
+                            categoryId,
+                            color,
+                            minPrice,
+                            maxPrice
+                    );
+                }
+            } else if (size != null) {
+                return itemRepository.findByCategoryIdAndSizeAndPriceBetween(
+                        categoryId,
+                        size,
+                        minPrice,
+                        maxPrice
+                );
+            } else {
+                return itemRepository.findByCategoryIdAndPriceBetween(
+                        categoryId,
+                        minPrice,
+                        maxPrice
+                );
+            }
+        } else if (color != null) {
+            if (size != null) {
+                return itemRepository.findByColorAndSizeAndPriceBetween(
+                        color,
+                        size,
+                        minPrice,
+                        maxPrice
+                );
+            } else {
+                return itemRepository.findByColorAndPriceBetween(
+                        color,
+                        minPrice,
+                        maxPrice
+                );
+            }
+        } else if (size != null) {
+            return itemRepository.findBySizeAndPriceBetween(
+                    size,
+                    minPrice,
+                    maxPrice
+            );
+        } else {
+            return itemRepository.findByPriceBetween(
+                    minPrice,
+                    maxPrice
+            );
+        }
     }
 }

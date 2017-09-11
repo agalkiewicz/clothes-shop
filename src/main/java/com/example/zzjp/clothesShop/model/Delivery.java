@@ -1,5 +1,7 @@
 package com.example.zzjp.clothesShop.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.repository.cdi.Eager;
 
@@ -43,5 +45,13 @@ public class Delivery {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
     }
 }
