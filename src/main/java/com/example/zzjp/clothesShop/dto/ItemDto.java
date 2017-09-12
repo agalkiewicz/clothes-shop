@@ -1,6 +1,9 @@
 package com.example.zzjp.clothesShop.dto;
 
 import com.example.zzjp.clothesShop.model.Size;
+import javafx.beans.DefaultProperty;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -21,6 +24,10 @@ public class ItemDto {
 
     @NotNull
     private BigDecimal price;
+
+    @NotNull
+    @Min(0)
+    private Integer amount;
 
     public ItemDto() {
     }
@@ -63,5 +70,33 @@ public class ItemDto {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
+    }
+
+    @Override
+    public String toString() {
+        return "ItemDto{" +
+                "name='" + name + '\'' +
+                ", categoryId=" + categoryId +
+                ", color='" + color + '\'' +
+                ", size=" + size +
+                ", price=" + price +
+                ", amount=" + amount +
+                '}';
     }
 }

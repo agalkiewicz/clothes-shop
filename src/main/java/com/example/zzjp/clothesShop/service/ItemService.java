@@ -5,7 +5,6 @@ import com.example.zzjp.clothesShop.model.*;
 import com.example.zzjp.clothesShop.dto.ItemDto;
 import com.example.zzjp.clothesShop.repository.DiscountRepository;
 import com.example.zzjp.clothesShop.repository.ItemRepository;
-import com.example.zzjp.clothesShop.repository.ItemStateRepository;
 import com.example.zzjp.clothesShop.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,8 +22,6 @@ public class ItemService {
 
     private final CategoryService categoryService;
 
-    private final ItemStateRepository itemStateRepository;
-
     private final DiscountRepository discountRepository;
 
     private final OrderRepository orderRepository;
@@ -32,12 +29,10 @@ public class ItemService {
     @Autowired
     public ItemService(final ItemRepository itemRepository,
                        final CategoryService categoryService,
-                       final ItemStateRepository itemStateRepository,
                        final DiscountRepository discountRepository,
                        final OrderRepository orderRepository) {
         this.itemRepository = itemRepository;
         this.categoryService = categoryService;
-        this.itemStateRepository = itemStateRepository;
         this.discountRepository = discountRepository;
         this.orderRepository = orderRepository;
     }
@@ -82,7 +77,7 @@ public class ItemService {
         return itemRepository.findBySize(size);
     }
 
-    public Item add(ItemDto itemDto) {
+    public Item create(ItemDto itemDto) {
         Category category = categoryService.getById(itemDto.getCategoryId());
         Item item = new Item(itemDto);
         item.setCategory(category);
@@ -99,13 +94,12 @@ public class ItemService {
         item.setPrice(itemDto.getPrice());
         item.setSize(itemDto.getSize());
         item.setCategory(category);
+        item.setAmount(itemDto.getAmount());
 
         return itemRepository.saveAndFlush(item);
     }
 
-    public void remove(Long id) {
-//        ItemState itemState = itemStateRepository.findByItemId(id);
-//        itemStateRepository.delete(itemState);
+//    public void remove(Long id) {
 //        List<Discount> discounts = discountRepository.findByItemId(id);
 //        ArrayList<Order> orders = new ArrayList<>();
 //        for (Discount discount : discounts) {
@@ -125,7 +119,7 @@ public class ItemService {
 //            orderRepository.saveAndFlush(itemOrder);
 //        }
 //
-    }
+//    }
 
     public List<Item> filter(FilterDto filterDto) {
         Long categoryId = filterDto.getCategoryId();

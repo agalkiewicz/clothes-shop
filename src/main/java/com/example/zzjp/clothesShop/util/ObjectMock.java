@@ -20,12 +20,14 @@ public class ObjectMock {
     public static final Role ROLE = Role.USER;
     public static final String DELIVERY_NAME = "INPOST";
     public static final BigDecimal DELIVERY_PRICE = new BigDecimal("12.99");
+    public static final Integer AMOUNT = 1;
 
     public static ItemDto mockItemDto() {
         ItemDto itemDto = new ItemDto();
         itemDto.setName(ITEM_DTO_NAME);
         itemDto.setPrice(ITEM_DTO_PRICE);
         itemDto.setCategoryId(ITEM_DTO_CATEGORY_ID);
+        itemDto.setAmount(AMOUNT);
 
         return itemDto;
     }

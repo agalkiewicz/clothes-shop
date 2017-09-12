@@ -54,7 +54,7 @@ public class ItemController {
     @PostMapping(produces = "application/json")
     ResponseEntity<Item> add(@RequestBody @Valid ItemDto itemDto) {
         try {
-            Item item = itemService.add(itemDto);
+            Item item = itemService.create(itemDto);
 
             return new ResponseEntity<>(item, HttpStatus.OK);
         } catch (Exception e) {

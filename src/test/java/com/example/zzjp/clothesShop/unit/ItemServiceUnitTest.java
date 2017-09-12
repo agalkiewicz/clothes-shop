@@ -2,7 +2,6 @@ package com.example.zzjp.clothesShop.unit;
 
 import com.example.zzjp.clothesShop.dto.FilterDto;
 import com.example.zzjp.clothesShop.repository.DiscountRepository;
-import com.example.zzjp.clothesShop.repository.ItemStateRepository;
 import com.example.zzjp.clothesShop.repository.OrderRepository;
 import com.example.zzjp.clothesShop.util.PropertiesValues;
 import com.example.zzjp.clothesShop.model.Category;
@@ -35,9 +34,6 @@ public class ItemServiceUnitTest {
     ItemRepository itemRepository;
 
     @Mock
-    ItemStateRepository itemStateRepository;
-
-    @Mock
     DiscountRepository discountRepository;
 
     ItemService itemService;
@@ -50,7 +46,7 @@ public class ItemServiceUnitTest {
 
     @Before
     public void setUp() {
-        itemService = new ItemService(itemRepository, categoryService, itemStateRepository, discountRepository, orderRepository);
+        itemService = new ItemService(itemRepository, categoryService, discountRepository, orderRepository);
     }
 
     private static Category category1;
@@ -77,6 +73,7 @@ public class ItemServiceUnitTest {
         item1.setPrice(PropertiesValues.PRICE_1);
         item1.setSize(PropertiesValues.SIZE_1);
         item1.setColor(PropertiesValues.COLOR_1);
+        item1.setAmount(PropertiesValues.AMOUNT_1);
 
         item2 = new Item();
         item2.setId(PropertiesValues.ITEM_ID_2);
@@ -85,6 +82,7 @@ public class ItemServiceUnitTest {
         item2.setPrice(PropertiesValues.PRICE_2);
         item2.setSize(PropertiesValues.SIZE_1);
         item2.setColor(PropertiesValues.COLOR_1);
+        item2.setAmount(PropertiesValues.AMOUNT_2);
 
         item3 = new Item();
         item3.setId(PropertiesValues.ITEM_ID_3);
@@ -93,6 +91,7 @@ public class ItemServiceUnitTest {
         item3.setPrice(PropertiesValues.PRICE_2);
         item3.setSize(PropertiesValues.SIZE_2);
         item3.setColor(PropertiesValues.COLOR_2);
+        item3.setAmount(PropertiesValues.AMOUNT_3);
 
         items = Arrays.asList(item1, item2, item3);
     }
@@ -258,7 +257,7 @@ public class ItemServiceUnitTest {
     }
 
     @Test
-    public void shouldAddItem() {
+    public void shouldCreateItem() {
         ItemDto itemDto = ObjectMock.mockItemDto();
 
         Category category = new Category(PropertiesValues.CATEGORY_NAME_1);
@@ -274,7 +273,7 @@ public class ItemServiceUnitTest {
                 .when(itemRepository)
                 .save(item);
 
-        Item result = itemService.add(itemDto);
+        Item result = itemService.create(itemDto);
 
         verify(categoryService)
                 .getById(itemDto.getCategoryId());
@@ -289,6 +288,8 @@ public class ItemServiceUnitTest {
                 .isEqualTo(ObjectMock.ITEM_DTO_PRICE);
         assertThat(result.getCategory().getId())
                 .isEqualTo(ObjectMock.ITEM_DTO_CATEGORY_ID);
+        assertThat(result.getAmount())
+                .isEqualTo(ObjectMock.AMOUNT);
     }
 
     @Test
@@ -297,22 +298,31 @@ public class ItemServiceUnitTest {
 
         Category category = new Category(PropertiesValues.CATEGORY_NAME_1);
         category.setId(itemDto.getCategoryId());
+        Category newCategory = new Category(PropertiesValues.CATEGORY_NAME_2);
+        newCategory.setId(12L);
 
-        Item item = new Item(itemDto);
-        item.setCategory(category);
+        Item itemBefore = new Item(itemDto);
+        itemBefore.setCategory(category);
 
         Long id = 1L;
-        item.setId(id);
+        itemBefore.setId(id);
 
-        doReturn(item)
+        Item itemAfter = new Item();
+        itemAfter.setId(id);
+        itemAfter.setAmount(PropertiesValues.AMOUNT_3);
+        itemAfter.setName(PropertiesValues.ITEM_NAME_3);
+        itemAfter.setCategory(newCategory);
+        itemAfter.setPrice(PropertiesValues.PRICE_2);
+
+        doReturn(itemBefore)
                 .when(itemRepository)
                 .findOne(id);
         doReturn(category)
                 .when(categoryService)
                 .getById(itemDto.getCategoryId());
-        doReturn(item)
+        doReturn(itemAfter)
                 .when(itemRepository)
-                .saveAndFlush(item);
+                .saveAndFlush(itemBefore);
 
         Item result = itemService.update(id, itemDto);
 
@@ -321,19 +331,20 @@ public class ItemServiceUnitTest {
         verify(categoryService)
                 .getById(itemDto.getCategoryId());
         verify(itemRepository)
-                .saveAndFlush(item);
+                .saveAndFlush(itemBefore);
 
         assertThat(result)
                 .isNotNull();
         assertThat(result.getId())
                 .isEqualTo(id);
         assertThat(result.getName())
-                .isEqualTo(ObjectMock.ITEM_DTO_NAME);
+                .isNotEqualTo(ObjectMock.ITEM_DTO_NAME);
         assertThat(result.getPrice())
-                .isEqualTo(ObjectMock.ITEM_DTO_PRICE);
+                .isNotEqualTo(ObjectMock.ITEM_DTO_PRICE);
         assertThat(result.getCategory().getId())
-                .isEqualTo(ObjectMock.ITEM_DTO_CATEGORY_ID);
-
+                .isNotEqualTo(ObjectMock.ITEM_DTO_CATEGORY_ID);
+        assertThat(result.getAmount())
+                .isNotEqualTo(ObjectMock.AMOUNT);
     }
 
 //    @Test

@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
@@ -29,16 +30,15 @@ public class Item {
     private Size size;
 
     @NotNull
+    @Min(0)
+    private Integer amount;
+
+    @NotNull
     private BigDecimal price;
 
-    //    @OneToOne(mappedBy = "item")
-    @OneToOne()
-    @JoinColumn(name = "item_state_id", referencedColumnName = "id")
-    private ItemState itemState;
-
-//    @OneToOne()
-//    @JoinColumn(name = "item_id", referencedColumnName = "id")
-//    private Item item;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "item_state_id", referencedColumnName = "id")
+//    private ItemState itemState;
 
     public Item() {
     }
@@ -48,16 +48,23 @@ public class Item {
         this.color = itemDto.getColor();
         this.price = itemDto.getPrice();
         this.size = itemDto.getSize();
+        this.amount = itemDto.getAmount();
     }
 
-    //    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "item_state_id", referencedColumnName = "id")
-    public ItemState getItemState() {
-        return itemState;
+//    public ItemState getItemState() {
+//        return itemState;
+//    }
+//
+//    public void setItemState(ItemState itemState) {
+//        this.itemState = itemState;
+//    }
+
+    public Integer getAmount() {
+        return amount;
     }
 
-    public void setItemState(ItemState itemState) {
-        this.itemState = itemState;
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
     public Long getId() {
