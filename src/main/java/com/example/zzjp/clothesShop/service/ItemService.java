@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -98,9 +99,7 @@ public class ItemService {
         return itemRepository.saveAndFlush(item);
     }
 
-    public void remove(Long id) {
-//        ItemState itemState = itemStateRepository.findByItemId(id);
-//        itemStateRepository.delete(itemState);
+//    public void remove(Long id) {
 //        List<Discount> discounts = discountRepository.findByItemId(id);
 //        ArrayList<Order> orders = new ArrayList<>();
 //        for (Discount discount : discounts) {
@@ -120,7 +119,7 @@ public class ItemService {
 //            orderRepository.saveAndFlush(itemOrder);
 //        }
 //
-    }
+//    }
 
     public List<Item> filter(FilterDto filterDto) {
         Long categoryId = filterDto.getCategoryId();

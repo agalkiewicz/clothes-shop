@@ -100,9 +100,13 @@ public class OrderService {
     public Order countValue(Long id) {
         Order order = orderRepository.findOne(id);
         BigDecimal value = new BigDecimal("0.00");
-        for (Item item : order.getItems()) {
-            value = value.add(item.getPrice());
-        }
+//        for (Item item : order.getItems()) {
+//            value = value.add(item.getPrice());
+//        }
+        value = order.getItems()
+                .stream()
+                .map(Item::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
         if (order.getDelivery() != null) {
             value = value.add(order.getDelivery().getPrice());
         }
@@ -135,7 +139,6 @@ public class OrderService {
                 value = value.add(multiply);
             }
         }
-
 
         return value;
     }
