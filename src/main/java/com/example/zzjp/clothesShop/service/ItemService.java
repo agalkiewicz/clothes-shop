@@ -82,7 +82,7 @@ public class ItemService {
         return itemRepository.findBySize(size);
     }
 
-    public Item add(ItemDto itemDto) {
+    public Item create(ItemDto itemDto) {
         Category category = categoryService.getById(itemDto.getCategoryId());
         Item item = new Item(itemDto);
         item.setCategory(category);
@@ -99,6 +99,7 @@ public class ItemService {
         item.setPrice(itemDto.getPrice());
         item.setSize(itemDto.getSize());
         item.setCategory(category);
+        item.setAmount(itemDto.getAmount());
 
         return itemRepository.saveAndFlush(item);
     }

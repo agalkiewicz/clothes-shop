@@ -46,4 +46,7 @@ public class PropertiesValues {
     public static final Long DISCOUNT_ID_1 = 1L;
     public static final Long DISCOUNT_ID_2 = 2L;
     public static final Long DISCOUNT_ID_3 = 3L;
+    public static final Integer AMOUNT_1 = 1;
+    public static final Integer AMOUNT_2 = 2;
+    public static final Integer AMOUNT_3 = 0;
 }

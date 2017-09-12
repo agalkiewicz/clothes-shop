@@ -258,11 +258,7 @@ public class OrderServiceUnitTest {
 
     @Test(expected = NoItemException.class)
     public void shouldThrowNoItemExceptionWhenNoItem() throws NoItemException {
-        ItemState itemState = new ItemState();
-//        itemState.setItem(item3);
-        item3.setItemState(itemState);
-        itemState.setAmount(0);
-        item3.setItemState(itemState);
+        item3.setAmount(0);
 
         when(orderRepository.findOne(order.getId()))
                 .thenReturn(order);
@@ -274,10 +270,7 @@ public class OrderServiceUnitTest {
 
     @Test
     public void shouldDecreaseItemStateAmountWhenAddItem() throws NoItemException {
-        ItemState itemState = new ItemState();
-        item3.setItemState(itemState);
-        itemState.setAmount(1);
-        item3.setItemState(itemState);
+        item3.setAmount(1);
 
         when(orderRepository.findOne(order.getId()))
                 .thenReturn(order);
@@ -296,7 +289,7 @@ public class OrderServiceUnitTest {
         verify(orderRepository)
                 .findOne(order.getId());
 
-        assertThat(itemState.getAmount())
+        assertThat(item3.getAmount())
                 .isEqualTo(0);
         assertThat(result)
                 .isEqualTo(order);

@@ -5,10 +5,12 @@ import com.example.zzjp.clothesShop.model.*;
 import com.example.zzjp.clothesShop.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
 @Service
+@Transactional
 public class OrderService {
 
     private OrderRepository orderRepository;
@@ -39,21 +41,24 @@ public class OrderService {
     public Order addItem(Long orderId, Long itemId) throws NoItemException {
         Order order = orderRepository.findOne(orderId);
         Item item = itemRepository.findOne(itemId);
-        if (item.getItemState().getAmount() == 0) {
+        if (item.getAmount() == 0) {
             throw new NoItemException();
         }
-        int oldAmount = item.getItemState().getAmount();
-        item.getItemState().setAmount(oldAmount - 1);
-        order.addItem(item);
+        int oldAmount = item.getAmount();
+        item.setAmount(oldAmount - 1);
+        itemRepository.saveAndFlush(item);
 
+        order.addItem(item);
         return orderRepository.save(order);
     }
 
     public Order removeItem(Long orderId, Long itemId) {
-        Order order = orderRepository.findOne(orderId);
-        order.removeItem(itemId);
         Item item = itemRepository.findOne(itemId);
-        item.getItemState().setAmount(item.getItemState().getAmount() - 1);
+        item.setAmount(item.getAmount() + 1);
+        itemRepository.saveAndFlush(item);
+
+        Order order = orderRepository.findOne(orderId);
+        order.removeItem(item);
 
         return orderRepository.save(order);
     }

@@ -14,22 +14,16 @@ public class ItemState {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    //    @OneToOne(mappedBy = "itemState")
-//    @OneToOne()
-//    @JoinColumn(name = "item_id", referencedColumnName = "id")
-//    private Item item;
-
     @NotNull
     @Min(0)
     private Integer amount;
 
-//    public Item getItem() {
-//        return item;
-//    }
-//
-//    public void setItem(Item item) {
-//        this.item = item;
-//    }
+    public ItemState(Integer amount) {
+        this.amount = amount;
+    }
+
+    public ItemState() {
+    }
 
     public Integer getAmount() {
         return amount;

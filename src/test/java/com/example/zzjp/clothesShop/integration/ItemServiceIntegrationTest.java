@@ -2,6 +2,7 @@ package com.example.zzjp.clothesShop.integration;
 
 import com.example.zzjp.clothesShop.ClothesShopApplication;
 import com.example.zzjp.clothesShop.dto.FilterDto;
+import com.example.zzjp.clothesShop.model.ItemState;
 import com.example.zzjp.clothesShop.repository.*;
 import com.example.zzjp.clothesShop.util.PropertiesValues;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
@@ -154,7 +155,7 @@ public class ItemServiceIntegrationTest {
         List<Item> result = itemService.getAll();
 
         assertThat(result.size())
-                .isEqualTo(3);
+                .isEqualTo(PropertiesValues.NUMBER_OF_ITEMS);
     }
 
     @Test
@@ -174,7 +175,7 @@ public class ItemServiceIntegrationTest {
     }
 
     @Test
-    public void shouldAddItem() {
+    public void shouldCreateItem() {
         ItemDto itemDto = new ItemDto();
         String name = "SHORTS003L";
         itemDto.setName(name);
@@ -182,15 +183,30 @@ public class ItemServiceIntegrationTest {
         itemDto.setColor("white");
         itemDto.setSize(Size.L);
         itemDto.setPrice(new BigDecimal("49.99"));
+        itemDto.setAmount(5);
 
         List<Item> itemsBefore = itemRepository.findAll();
-        Item result = itemService.add(itemDto);
+        Item result = itemService.create(itemDto);
         List<Item> itemsAfter = itemRepository.findAll();
 
         assertThat(itemsBefore.size())
                 .isNotEqualTo(itemsAfter.size());
         assertThat(result)
                 .isNotNull();
+        assertThat(result.getId())
+                .isNotNull();
+        assertThat(result.getColor())
+                .isEqualTo(itemDto.getColor());
+        assertThat(result.getSize())
+                .isEqualTo(itemDto.getSize());
+        assertThat(result.getPrice())
+                .isEqualTo(itemDto.getPrice());
+        assertThat(result.getCategory().getId())
+                .isEqualTo(itemDto.getCategoryId());
+        assertThat(result.getAmount())
+                .isEqualTo(itemDto.getAmount());
+        assertThat(result.getName())
+                .isEqualTo(itemDto.getName());
     }
 
     @Test
@@ -199,6 +215,7 @@ public class ItemServiceIntegrationTest {
         String color = "blue";
         Size size = Size.XL;
         BigDecimal price = new BigDecimal("49.99");
+        Integer amount = 12;
 
         ItemDto itemDto = new ItemDto();
         itemDto.setName(name);
@@ -206,6 +223,7 @@ public class ItemServiceIntegrationTest {
         itemDto.setColor(color);
         itemDto.setSize(size);
         itemDto.setPrice(price);
+        itemDto.setAmount(amount);
 
         Item result = itemService.update(PropertiesValues.ITEM_ID_1, itemDto);
 
@@ -233,6 +251,11 @@ public class ItemServiceIntegrationTest {
                 .isNotEqualTo(PropertiesValues.CATEGORY_ID_1);
         assertThat(result.getCategory().getId())
                 .isEqualTo(PropertiesValues.CATEGORY_ID_2);
+
+        assertThat(result.getAmount())
+                .isNotEqualTo(PropertiesValues.AMOUNT_1);
+        assertThat(result.getAmount())
+                .isEqualTo(amount);
     }
 
 //    @Test

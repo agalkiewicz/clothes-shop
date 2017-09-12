@@ -58,8 +58,8 @@ public class Order {
         items.add(item);
     }
 
-    public void removeItem(Long id) {
-        items.remove(id);
+    public void removeItem(Item item) {
+        items.remove(item);
     }
 
     public void setDiscount(Discount discount) {

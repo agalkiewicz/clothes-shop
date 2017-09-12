@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ItemStateRepository extends JpaRepository<ItemState, Long> {
 
-//    ItemState findByItemId(Long itemId);
 }

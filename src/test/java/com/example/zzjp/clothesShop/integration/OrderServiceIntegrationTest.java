@@ -75,12 +75,12 @@ public class OrderServiceIntegrationTest {
     @Test
     public void shouldAddItem() throws NoItemException {
         Item itemBefore = itemRepository.findOne(PropertiesValues.ITEM_ID_1);
-        int amountBefore = itemBefore.getItemState().getAmount();
+        int amountBefore = itemBefore.getAmount();
 
         Order order = orderService.addItem(PropertiesValues.ORDER_ID_1, PropertiesValues.ITEM_ID_1);
 
         Item itemAfter = itemRepository.findOne(PropertiesValues.ITEM_ID_1);
-        int amountAfter = itemAfter.getItemState().getAmount();
+        int amountAfter = itemAfter.getAmount();
 
         assertThat(order.getItems().size())
                 .isEqualTo(PropertiesValues.NUMBER_OF_ORDER_ITEMS + 1);
@@ -96,12 +96,12 @@ public class OrderServiceIntegrationTest {
     @Test
     public void shouldRemoveItem() {
         Item itemBefore = itemRepository.findOne(PropertiesValues.ITEM_ID_1);
-        int amountBefore = itemBefore.getItemState().getAmount();
+        int amountBefore = itemBefore.getAmount();
 
         Order result = orderService.removeItem(PropertiesValues.ORDER_ID_1, PropertiesValues.ITEM_ID_1);
 
         Item itemAfter = itemRepository.findOne(PropertiesValues.ITEM_ID_1);
-        int amountAfter = itemAfter.getItemState().getAmount();
+        int amountAfter = itemAfter.getAmount();
 
         assertThat(amountBefore)
                 .isNotEqualTo(amountAfter);

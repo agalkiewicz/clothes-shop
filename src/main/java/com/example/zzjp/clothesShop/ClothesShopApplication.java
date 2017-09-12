@@ -66,6 +66,7 @@ public class ClothesShopApplication implements CommandLineRunner {
 		item1.setPrice(PropertiesValues.PRICE_1);
 		item1.setSize(PropertiesValues.SIZE_1);
 		item1.setColor(PropertiesValues.COLOR_1);
+		item1.setAmount(PropertiesValues.AMOUNT_1);
 
 		Item item2 = new Item();
 		item2.setId(PropertiesValues.ITEM_ID_2);
@@ -74,6 +75,7 @@ public class ClothesShopApplication implements CommandLineRunner {
 		item2.setPrice(PropertiesValues.PRICE_2);
 		item2.setSize(PropertiesValues.SIZE_1);
 		item2.setColor(PropertiesValues.COLOR_1);
+		item2.setAmount(PropertiesValues.AMOUNT_2);
 
 		Item item3 = new Item();
 		item3.setId(PropertiesValues.ITEM_ID_3);
@@ -82,21 +84,22 @@ public class ClothesShopApplication implements CommandLineRunner {
 		item3.setPrice(PropertiesValues.PRICE_2);
 		item3.setSize(PropertiesValues.SIZE_2);
 		item3.setColor(PropertiesValues.COLOR_2);
+		item3.setAmount(PropertiesValues.AMOUNT_3);
 
-		ItemState itemState1 = new ItemState();
-		itemState1.setAmount(1);
+//		ItemState itemState1 = new ItemState();
+//		itemState1.setAmount(1);
+//
+//		ItemState itemState2 = new ItemState();
+//		itemState2.setAmount(2);
+//
+//		ItemState itemState3 = new ItemState();
+//		itemState3.setAmount(0);
 
-		ItemState itemState2 = new ItemState();
-		itemState2.setAmount(2);
+//		itemStateRepository.save(Arrays.asList(itemState1, itemState2, itemState3));
 
-		ItemState itemState3 = new ItemState();
-		itemState3.setAmount(0);
-
-		itemStateRepository.save(Arrays.asList(itemState1, itemState2, itemState3));
-
-		item1.setItemState(itemState1);
-		item2.setItemState(itemState2);
-		item3.setItemState(itemState3);
+//		item1.setItemState(itemState1);
+//		item2.setItemState(itemState2);
+//		item3.setItemState(itemState3);
 
 		itemRepository.save(Arrays.asList(item1, item2, item3));
 
