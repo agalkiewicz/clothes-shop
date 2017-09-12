@@ -269,15 +269,13 @@ public class OrderServiceUnitTest {
     }
 
     @Test
-    public void shouldDecreaseItemStateAmountWhenAddItem() throws NoItemException {
+    public void shouldDecreaseItemAmountWhenAddItem() throws NoItemException {
         item3.setAmount(1);
 
         when(orderRepository.findOne(order.getId()))
                 .thenReturn(order);
         when(itemRepository.findOne(item3.getId()))
                 .thenReturn(item3);
-
-        order.addItem(item3);
 
         when(orderRepository.save(order))
                 .thenReturn(order);
@@ -286,12 +284,93 @@ public class OrderServiceUnitTest {
 
         verify(orderRepository)
                 .findOne(order.getId());
+        verify(itemRepository)
+                .findOne(item3.getId());
         verify(orderRepository)
-                .findOne(order.getId());
+                .save(order);
 
         assertThat(item3.getAmount())
                 .isEqualTo(0);
         assertThat(result)
                 .isEqualTo(order);
+    }
+
+    @Test
+    public void shouldIncreaseItemsListSizeWhenAddItem() throws NoItemException {
+        item3.setAmount(1);
+        int sizeBefore = order.getItems().size();
+
+        when(orderRepository.findOne(order.getId()))
+                .thenReturn(order);
+        when(itemRepository.findOne(item3.getId()))
+                .thenReturn(item3);
+
+        when(orderRepository.save(order))
+                .thenReturn(order);
+
+        Order result = orderService.addItem(order.getId(), item3.getId());
+
+        verify(orderRepository)
+                .findOne(order.getId());
+        verify(itemRepository)
+                .findOne(item3.getId());
+        verify(orderRepository)
+                .save(order);
+
+        assertThat(result.getItems().size())
+                .isEqualTo(sizeBefore + 1);
+    }
+
+    @Test
+    public void shouldIncreaseItemAmountWhenRemoveItem() throws NoItemException {
+        item3.setAmount(1);
+
+        when(orderRepository.findOne(order.getId()))
+                .thenReturn(order);
+        when(itemRepository.findOne(item3.getId()))
+                .thenReturn(item3);
+
+        when(orderRepository.save(order))
+                .thenReturn(order);
+
+        Order result = orderService.removeItem(order.getId(), item3.getId());
+
+        verify(orderRepository)
+                .findOne(order.getId());
+        verify(itemRepository)
+                .findOne(item3.getId());
+        verify(orderRepository)
+                .save(order);
+
+        assertThat(item3.getAmount())
+                .isEqualTo(2);
+        assertThat(result)
+                .isEqualTo(order);
+    }
+
+    @Test
+    public void shouldDecreaseItemsListSizeWhenRemoveItem() throws NoItemException {
+        item3.setAmount(1);
+        int sizeBefore = order.getItems().size();
+
+        when(orderRepository.findOne(order.getId()))
+                .thenReturn(order);
+        when(itemRepository.findOne(item3.getId()))
+                .thenReturn(item3);
+
+        when(orderRepository.save(order))
+                .thenReturn(order);
+
+        Order result = orderService.removeItem(order.getId(), item3.getId());
+
+        verify(orderRepository)
+                .findOne(order.getId());
+        verify(itemRepository)
+                .findOne(item3.getId());
+        verify(orderRepository)
+                .save(order);
+
+        assertThat(result.getItems().size())
+                .isEqualTo(sizeBefore - 1);
     }
 }

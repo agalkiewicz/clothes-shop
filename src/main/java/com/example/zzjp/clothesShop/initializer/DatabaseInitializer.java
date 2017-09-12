@@ -27,8 +27,6 @@ public class DatabaseInitializer {
 
     private DiscountRepository discountRepository;
 
-    private ItemStateRepository itemStateRepository;
-
     @Autowired
     public DatabaseInitializer(ItemRepository itemRepository,
                                CategoryRepository categoryRepository,
@@ -36,8 +34,7 @@ public class DatabaseInitializer {
                                PasswordEncoder passwordEncoder,
                                OrderRepository orderRepository,
                                DeliveryRepository deliveryRepository,
-                               DiscountRepository discountRepository,
-                               ItemStateRepository itemStateRepository) {
+                               DiscountRepository discountRepository) {
         this.itemRepository = itemRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
@@ -45,7 +42,6 @@ public class DatabaseInitializer {
         this.orderRepository = orderRepository;
         this.deliveryRepository = deliveryRepository;
         this.discountRepository = discountRepository;
-        this.itemStateRepository = itemStateRepository;
     }
 
     public void initializeDB() {
@@ -85,21 +81,6 @@ public class DatabaseInitializer {
         item3.setSize(PropertiesValues.SIZE_2);
         item3.setColor(PropertiesValues.COLOR_2);
         item3.setAmount(PropertiesValues.AMOUNT_3);
-
-//        ItemState itemState1 = new ItemState();
-//        itemState1.setAmount(1);
-//
-//        ItemState itemState2 = new ItemState();
-//        itemState2.setAmount(2);
-//
-//        ItemState itemState3 = new ItemState();
-//        itemState3.setAmount(0);
-
-//        itemStateRepository.save(Arrays.asList(itemState1, itemState2, itemState3));
-
-//        item1.setItemState(itemState1);
-//        item2.setItemState(itemState2);
-//        item3.setItemState(itemState3);
 
         itemRepository.save(Arrays.asList(item1, item2, item3));
 

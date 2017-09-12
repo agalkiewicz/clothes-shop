@@ -54,6 +54,18 @@ public class Order {
     public Order() {
     }
 
+    public Order(Order order) {
+        this.id = order.getId();
+        this.user = order.user;
+        this.items = new ArrayList<>();
+        this.items.addAll(order.getItems());
+        this.value = order.getValue();
+        this.discount = order.getDiscount();
+        this.isPaidUp = order.isPaidUp();
+        this.orderStatus = order.getOrderStatus();
+        this.delivery = order.delivery;
+    }
+
     public void addItem(Item item) {
         items.add(item);
     }

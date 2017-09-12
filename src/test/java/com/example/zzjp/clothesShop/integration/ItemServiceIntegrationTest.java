@@ -2,7 +2,6 @@ package com.example.zzjp.clothesShop.integration;
 
 import com.example.zzjp.clothesShop.ClothesShopApplication;
 import com.example.zzjp.clothesShop.dto.FilterDto;
-import com.example.zzjp.clothesShop.model.ItemState;
 import com.example.zzjp.clothesShop.repository.*;
 import com.example.zzjp.clothesShop.util.PropertiesValues;
 import com.example.zzjp.clothesShop.initializer.DatabaseInitializer;
@@ -57,9 +56,6 @@ public class ItemServiceIntegrationTest {
     @Autowired
     private DiscountRepository discountRepository;
 
-    @Autowired
-    private ItemStateRepository itemStateRepository;
-
     @PostConstruct
     public void initializeDB() {
         DatabaseInitializer databaseInitializer = new DatabaseInitializer(
@@ -69,8 +65,7 @@ public class ItemServiceIntegrationTest {
                 passwordEncoder,
                 orderRepository,
                 deliveryRepository,
-                discountRepository,
-                itemStateRepository
+                discountRepository
         );
 
         databaseInitializer.initializeDB();

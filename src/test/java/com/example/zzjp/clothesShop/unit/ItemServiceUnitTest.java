@@ -2,7 +2,6 @@ package com.example.zzjp.clothesShop.unit;
 
 import com.example.zzjp.clothesShop.dto.FilterDto;
 import com.example.zzjp.clothesShop.repository.DiscountRepository;
-import com.example.zzjp.clothesShop.repository.ItemStateRepository;
 import com.example.zzjp.clothesShop.repository.OrderRepository;
 import com.example.zzjp.clothesShop.util.PropertiesValues;
 import com.example.zzjp.clothesShop.model.Category;
@@ -35,9 +34,6 @@ public class ItemServiceUnitTest {
     ItemRepository itemRepository;
 
     @Mock
-    ItemStateRepository itemStateRepository;
-
-    @Mock
     DiscountRepository discountRepository;
 
     ItemService itemService;
@@ -50,7 +46,7 @@ public class ItemServiceUnitTest {
 
     @Before
     public void setUp() {
-        itemService = new ItemService(itemRepository, categoryService, itemStateRepository, discountRepository, orderRepository);
+        itemService = new ItemService(itemRepository, categoryService, discountRepository, orderRepository);
     }
 
     private static Category category1;

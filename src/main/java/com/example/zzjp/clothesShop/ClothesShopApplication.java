@@ -39,9 +39,6 @@ public class ClothesShopApplication implements CommandLineRunner {
 	@Autowired
 	private OrderRepository orderRepository;
 
-	@Autowired
-	private ItemStateRepository itemStateRepository;
-
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();

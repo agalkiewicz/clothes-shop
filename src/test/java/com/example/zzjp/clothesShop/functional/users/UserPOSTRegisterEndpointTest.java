@@ -55,9 +55,6 @@ public class UserPOSTRegisterEndpointTest {
     @Autowired
     private DiscountRepository discountRepository;
 
-    @Autowired
-    private ItemStateRepository itemStateRepository;
-
     @PostConstruct
     public void initializeDB() {
         DatabaseInitializer databaseInitializer = new DatabaseInitializer(
@@ -67,8 +64,7 @@ public class UserPOSTRegisterEndpointTest {
                 passwordEncoder,
                 orderRepository,
                 deliveryRepository,
-                discountRepository,
-                itemStateRepository
+                discountRepository
         );
 
         databaseInitializer.initializeDB();
